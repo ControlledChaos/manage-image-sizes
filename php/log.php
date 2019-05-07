@@ -154,7 +154,7 @@ class PteLogger implements PteLogHandler {
 	private $counts      = array();
 	//private $defaulttype = 4;
 	//private $defaulttype = PteLogMessage::$DEBUG;
-	private $defaulttype = NULL;
+	private $defaulttype = null;
 	private $handlers = array();
 
 	private function __construct() {
@@ -209,7 +209,7 @@ class PteLogger implements PteLogHandler {
 	/*
 	 * misp_log
 	 */
-	private function misp_log($message, $type=NULL){
+	private function misp_log($message, $type=null){
 		if ( ! $message instanceof PteLogMessage ){
 			if ( is_string( $message ) ){
 				if ( is_null( $type ) ){
@@ -250,7 +250,7 @@ class PteLogger implements PteLogHandler {
 		self::singleton()->misp_log( $message, PteLogMessage::$DEBUG );
 	}
 
-	public function get_logs( $levels=NULL ){
+	public function get_logs( $levels=null ){
 		// Check that $levels is valid
 		$max = PteLogMessage::max_log_level();
 		if ( !is_int( $levels ) or $levels < 0 or $levels > $max ){

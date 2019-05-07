@@ -1,8 +1,8 @@
-# Copyright (C) 2015 Post Thumbnail Editor
-# This file is distributed under the same license as the Post Thumbnail Editor package.
+# Copyright (C) 2015 Manage Image Sizes
+# This file is distributed under the same license as the Manage Image Sizes package.
 msgid ""
 msgstr ""
-"Project-Id-Version: Post Thumbnail Editor 2.4.5\n"
+"Project-Id-Version: Manage Image Sizes 2.4.5\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/support/plugin/post-thumbnail-"
 "editor\n"
 "POT-Creation-Date: 2015-06-17 05:07:23+00:00\n"
@@ -49,14 +49,14 @@ msgstr ""
 msgid "transparent/white"
 msgstr ""
 
-#. #-#-#-#-#  manage-image-sizes.pot (Post Thumbnail Editor 2.4.5)  #-#-#-#-#
+#. #-#-#-#-#  manage-image-sizes.pot (Manage Image Sizes 2.4.5)  #-#-#-#-#
 #. Plugin Name of the plugin/theme
 #: html/misp.php:46 php/options.php:79 manage-image-sizes.php:211
 #: manage-image-sizes.php:251 manage-image-sizes.php:340
 #: manage-image-sizes.php:393 manage-image-sizes.php:394
 #: manage-image-sizes.php:400 manage-image-sizes.php:401
 #: manage-image-sizes.php:444
-msgid "Post Thumbnail Editor"
+msgid "Manage Image Sizes"
 msgstr ""
 
 #: html/misp.php:47
@@ -326,9 +326,9 @@ msgstr ""
 msgid "Edit Thumbnails"
 msgstr ""
 
-#. #-#-#-#-#  manage-image-sizes.pot (Post Thumbnail Editor 2.4.5)  #-#-#-#-#
+#. #-#-#-#-#  manage-image-sizes.pot (Manage Image Sizes 2.4.5)  #-#-#-#-#
 #. Plugin URI of the plugin/theme
-#. #-#-#-#-#  manage-image-sizes.pot (Post Thumbnail Editor 2.4.5)  #-#-#-#-#
+#. #-#-#-#-#  manage-image-sizes.pot (Manage Image Sizes 2.4.5)  #-#-#-#-#
 #. Author URI of the plugin/theme
 msgid "http://sewpafly.github.io/manage-image-sizes/"
 msgstr ""

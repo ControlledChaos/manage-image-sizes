@@ -1,4 +1,4 @@
-=== Post Thumbnail Editor ===
+=== Manage Image Sizes ===
 Contributors: sewpafly
 Donate link: http://sewpafly.github.io/post-thumbnail-editor/#toc_donations
 Tags: post-thumbnail, post thumbnail, featured image, featured, editor, image, awesome, crop
@@ -33,8 +33,8 @@ To meet the needs of themes where the post-thumbnails have random and capricious
 	2. Click the "Thumbnail" link in the rollover options.
 2. or start within image editor interface (when viewing image details)
 	1. Click "Edit Image"
-	2. Click the "Post Thumbnail Editor" link under the other thumbnail options.
-3. Using Post Thumbnail Editor Interface
+	2. Click the "Manage Image Sizes" link under the other thumbnail options.
+3. Using Manage Image Sizes Interface
 	1. Select the thumbnails you want to edit. If a thumbnail defines a specific aspect ratio it will be applied to the editor.  If you select thumbnails with different aspect ratios (`width / height`), this feature is disabled.  Be careful or you might make some of your pictures look funny.
 	2. Select the cropped/scaled area, by clicking and dragging on the left-hand image.
 	3. Click the "Crop" button.
@@ -69,7 +69,7 @@ If you want to post a problem on the [support forums][wp] or at [github][gh] ple
 
 1. Before/After
 2. To edit from Media Library click "Thumbnail" in the rollover options for the row.
-3. In the Edit subpage for media locate the box titled "Thumbnail Settings", and click the link to "Post Thumbnail Editor".
+3. In the Edit subpage for media locate the box titled "Thumbnail Settings", and click the link to "Manage Image Sizes".
 4. Crop the image as you see fit, select the thumbnails you wish to change, and click "Crop".
 5. Save the resized/recropped images by clicking the save icon.
 
@@ -147,7 +147,7 @@ If you want to post a problem on the [support forums][wp] or at [github][gh] ple
 * IE fix with the jcrop api
 * Now go into the view mode after cropping
 * Added option to crop and save without verifying
-* Featured images now have link to launch the Post Thumbnail Editor
+* Featured images now have link to launch the Manage Image Sizes
 * Updated coffee-script to 1.6.2
 * Updated French and Spanish translations
 * Made the cache buster an option
@@ -180,7 +180,7 @@ If you want to post a problem on the [support forums][wp] or at [github][gh] ple
 
 = 1.0.1 =
 * Fixed compatibility with other thickbox enabled plugins that called the wordpress media scripts.
-* Added Options screen (Settings -> Post Thumbnail Editor) to configure thickbox dimensions and enable/disable debugging.
+* Added Options screen (Settings -> Manage Image Sizes) to configure thickbox dimensions and enable/disable debugging.
 * Added Translation support & French translation (thanks to Li-An)
 
 = 1.0.0 =

@@ -1,8 +1,8 @@
-# Copyright (C) 2013 Post Thumbnail Editor
-# This file is distributed under the same license as the Post Thumbnail Editor package.
+# Copyright (C) 2013 Manage Image Sizes
+# This file is distributed under the same license as the Manage Image Sizes package.
 msgid ""
 msgstr ""
-"Project-Id-Version: Post Thumbnail Editor 2.0.0\n"
+"Project-Id-Version: Manage Image Sizes 2.0.0\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/manage-image-sizes\n"
 "POT-Creation-Date: 2013-03-08 04:51:59+00:00\n"
 "MIME-Version: 1.0\n"
@@ -14,13 +14,13 @@ msgstr ""
 "Language: Spanish\n"
 "X-Generator: Poedit 1.5.4\n"
 
-#. #-#-#-#-#  manage-image-sizes.pot (Post Thumbnail Editor 2.0.0-beta)  #-#-#-#-#
+#. #-#-#-#-#  manage-image-sizes.pot (Manage Image Sizes 2.0.0-beta)  #-#-#-#-#
 #. Plugin Name of the plugin/theme
 #: html/misp.php:166 php/options.php:55 manage-image-sizes.php:107
 #: manage-image-sizes.php:207 manage-image-sizes.php:208
 #: manage-image-sizes.php:216 manage-image-sizes.php:217
-msgid "Post Thumbnail Editor"
-msgstr "Post Thumbnail Editor"
+msgid "Manage Image Sizes"
+msgstr "Manage Image Sizes"
 
 #: html/misp.php:167
 msgid "crop and resize"

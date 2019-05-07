@@ -176,7 +176,7 @@ function misp_get_image_data( $id, $size, $size_data ){
 
 	// We don't really care how it gets generated, just that it is...
 	// see ajax-thumbnail-rebuild plugin for inspiration
-	if ( FALSE !== $fullsizepath && @file_exists($fullsizepath) ) {
+	if ( false !== $fullsizepath && @file_exists($fullsizepath) ) {
 		// Create the image and update the wordpress metadata
 		$resized = image_make_intermediate_size( $fullsizepath, 
 			$size_data['width'], 

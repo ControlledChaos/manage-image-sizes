@@ -1,8 +1,8 @@
-# Copyright (C) 2010 Post Thumbnail Editor
-# This file is distributed under the same license as the Post Thumbnail Editor package.
+# Copyright (C) 2010 Manage Image Sizes
+# This file is distributed under the same license as the Manage Image Sizes package.
 msgid ""
 msgstr ""
-"Project-Id-Version: Post Thumbnail Editor 1.0.1-alpha2\n"
+"Project-Id-Version: Manage Image Sizes 1.0.1-alpha2\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/manage-image-sizes\n"
 "POT-Creation-Date: 2011-09-06 15:57:59+00:00\n"
 "MIME-Version: 1.0\n"
@@ -16,7 +16,7 @@ msgstr ""
 "X-Poedit-SourceCharset: utf-8\n"
 
 #: html/misp.php:20
-msgid "Post Thumbnail Editor - Step 1"
+msgid "Manage Image Sizes - Step 1"
 msgstr "Vorschaubild Editor - Schritt 1"
 
 #: html/misp.php:33
@@ -40,7 +40,7 @@ msgid "Back"
 msgstr "Zurück"
 
 #: html/misp.php:80
-msgid "Post Thumbnail Editor - Step 2"
+msgid "Manage Image Sizes - Step 2"
 msgstr "Vorschaubild Editor - Schritt 2"
 
 #: html/misp.php:83
@@ -68,14 +68,14 @@ msgstr "Okey, sieht gut aus..."
 msgid "I'd rather start over..."
 msgstr "Nochmal neu beginnen..."
 
-#. #-#-#-#-#  manage-image-sizes.pot (Post Thumbnail Editor 1.0.1-alpha2)  #-#-#-#-#
+#. #-#-#-#-#  manage-image-sizes.pot (Manage Image Sizes 1.0.1-alpha2)  #-#-#-#-#
 #. Plugin Name of the plugin/theme
 #: html/misp.php:135
 #: manage-image-sizes.php:113
 #: manage-image-sizes.php:178
 #: manage-image-sizes.php:179
 #: php/options.php:64
-msgid "Post Thumbnail Editor"
+msgid "Manage Image Sizes"
 msgstr "Vorschaubild Editor"
 
 #: html/misp.php:138

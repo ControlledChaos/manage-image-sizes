@@ -1,8 +1,8 @@
-# Copyright (C) 2010 Post Thumbnail Editor
-# This file is distributed under the same license as the Post Thumbnail Editor package.
+# Copyright (C) 2010 Manage Image Sizes
+# This file is distributed under the same license as the Manage Image Sizes package.
 msgid ""
 msgstr ""
-"Project-Id-Version: Post Thumbnail Editor 1.0.3\n"
+"Project-Id-Version: Manage Image Sizes 1.0.3\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/support/plugin/manage-image-sizes\n"
 "POT-Creation-Date: 2015-07-20 15:02-0300\n"
 "PO-Revision-Date: 2015-07-20 15:24-0300\n"
@@ -56,8 +56,8 @@ msgstr "transparente/branco"
 #: manage-image-sizes.php:393 manage-image-sizes.php:394
 #: manage-image-sizes.php:400 manage-image-sizes.php:401
 #: manage-image-sizes.php:444
-msgid "Post Thumbnail Editor"
-msgstr "Post Thumbnail Editor"
+msgid "Manage Image Sizes"
+msgstr "Manage Image Sizes"
 
 #: html/misp.php:47
 msgid "crop and resize"
@@ -344,7 +344,7 @@ msgstr "Gerenciar individualmente as miniaturas do post"
 msgid "sewpafly"
 msgstr "sewpafly"
 
-#~ msgid "Post Thumbnail Editor - Step 1"
+#~ msgid "Manage Image Sizes - Step 1"
 #~ msgstr "Editar Miniatura do Post - Passo 1"
 
 #~ msgid "Create Thumbnails"
@@ -362,7 +362,7 @@ msgstr "sewpafly"
 #~ msgid "Back"
 #~ msgstr "Voltar"
 
-#~ msgid "Post Thumbnail Editor - Step 2"
+#~ msgid "Manage Image Sizes - Step 2"
 #~ msgstr "Editar Miniatura do Post - Passo 2"
 
 #~ msgid "We noticed some potential issues:"
@@ -383,7 +383,7 @@ msgstr "sewpafly"
 #~ msgid "I'd rather start over..."
 #~ msgstr "Eu odiei! Refazer..."
 
-#~ msgid "Post Thumbnail Editor Here"
+#~ msgid "Manage Image Sizes Here"
 #~ msgstr "Clique aqui para Editar a Miniatura"
 
 #~ msgid "Images were created successfully."

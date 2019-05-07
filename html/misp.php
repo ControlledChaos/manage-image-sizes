@@ -43,7 +43,7 @@ function u( $path ){
 <div class="wrap ng-cloak" ng-init="currentThumbnailBarPosition='<?php echo $options['misp_thumbnail_bar'];?>'" ng-controller="PteCtrl">
    <?php if ( !isset( $_GET['title'] ) || $_GET['title'] != 'false' ) : ?>
    <?php screen_icon('upload'); ?>
-   <h2><?php _e("Post Thumbnail Editor", MISP_DOMAIN);?> &ndash; 
+   <h2><?php _e("Manage Image Sizes", MISP_DOMAIN);?> &ndash; 
       <span id="misp-subtitle"><?php _e("crop and resize", MISP_DOMAIN); ?></span>
    </h2>
    <div class="subtitle"><?php echo $post->post_title; ?></div>

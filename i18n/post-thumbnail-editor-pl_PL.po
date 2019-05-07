@@ -1,8 +1,8 @@
-# Copyright (C) 2013 Post Thumbnail Editor
-# This file is distributed under the same license as the Post Thumbnail Editor package.
+# Copyright (C) 2013 Manage Image Sizes
+# This file is distributed under the same license as the Manage Image Sizes package.
 msgid ""
 msgstr ""
-"Project-Id-Version: Post Thumbnail Editor 2.0.0\n"
+"Project-Id-Version: Manage Image Sizes 2.0.0\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/manage-image-sizes\n"
 "POT-Creation-Date: 2015-06-16 11:57+0100\n"
 "PO-Revision-Date: 2015-06-16 11:57+0100\n"
@@ -58,7 +58,7 @@ msgstr "przezroczysty / biały"
 #: manage-image-sizes.php:340 manage-image-sizes.php:393
 #: manage-image-sizes.php:394 manage-image-sizes.php:400
 #: manage-image-sizes.php:401 manage-image-sizes.php:444
-msgid "Post Thumbnail Editor"
+msgid "Manage Image Sizes"
 msgstr "Edytor Ikon Wpisu"
 
 #: html/misp.php:47

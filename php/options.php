@@ -76,7 +76,7 @@ function misp_options_page(){
 	}
 	</style>
 	<div class="wrap">
-		<h2><?php _e('Post Thumbnail Editor', MISP_DOMAIN); ?></h2>
+		<h2><?php _e('Manage Image Sizes', MISP_DOMAIN); ?></h2>
 		<form action="options.php" method="post">
 			<?php settings_fields('misp_options'); ?>
 			<?php do_settings_sections('misp'); ?>
