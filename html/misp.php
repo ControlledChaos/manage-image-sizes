@@ -14,12 +14,12 @@ function u( $path ){
 <base href="/wp-admin/"/>
 -->
 <script type="text/javascript" charset="utf-8">
-   var post_id     = <?php echo $post->ID; ?> 
-     , post_width  = <?php echo $meta['width']; ?> 
-     , post_height = <?php echo $meta['height']; ?> 
+   var post_id     = <?php echo $post->ID; ?>
+     , post_width  = <?php echo $meta['width']; ?>
+     , post_height = <?php echo $meta['height']; ?>
      , misp_nonce   = "<?php echo wp_create_nonce("misp-resize-{$post->ID}"); ?>"
      , misp_options_nonce = "<?php echo wp_create_nonce("misp-options"); ?>"
-     , mispI18n     = <?php echo json_encode( 
+     , mispI18n     = <?php echo json_encode(
 			  array( 'no_t_selected' => __( 'No thumbnails selected', MISP_DOMAIN )
 			  , 'no_c_selected' => __( 'No crop selected', MISP_DOMAIN )
 			  , 'crop_problems' => __( 'Cropping will likely result in skewed imagery', MISP_DOMAIN )
@@ -35,18 +35,21 @@ function u( $path ){
 	echo 'var ajaxurl = "' . admin_url( 'admin-ajax.php' ) . '";';
 }?>
 </script>
- 
+
 <link rel="stylesheet" href="<?php u( 'apps/font-awesome/css/font-awesome.min.css' ) ?>"/>
 <link rel="stylesheet" href="<?php u( 'apps/jcrop/css/jquery.Jcrop.css' ) ?>"/>
 <link rel="stylesheet" href="<?php u( 'css/misp.css' ) ?>"/>
 
 <div class="wrap ng-cloak" ng-init="currentThumbnailBarPosition='<?php echo $options['misp_thumbnail_bar'];?>'" ng-controller="PteCtrl">
    <?php if ( !isset( $_GET['title'] ) || $_GET['title'] != 'false' ) : ?>
-   <?php screen_icon('upload'); ?>
-   <h2><?php _e("Manage Image Sizes", MISP_DOMAIN);?> &ndash; 
-      <span id="misp-subtitle"><?php _e("crop and resize", MISP_DOMAIN); ?></span>
-   </h2>
-   <div class="subtitle"><?php echo $post->post_title; ?></div>
+   <h1><?php _e( 'Manage Image Sizes', MISP_DOMAIN );?></h1>
+   <p class="description"><?php _e( 'Crop images by size and by aspect ratio.', MISP_DOMAIN );?></p>
+   <hr />
+   <?php echo sprintf(
+	   '<h2>%1s %2s</h2>',
+	   __( 'Editing ', MISP_DOMAIN ),
+	   $post->post_title
+   ); ?>
    <?php endif; ?>
    <h3 class="nav-tab-wrapper">
       <a ng-href="" ng-class="pageClass('crop')" ng-click="changePage('crop')" class="nav-tab"><?php _e("Crop", MISP_DOMAIN); ?></a>
@@ -76,10 +79,10 @@ function u( $path ){
 
             <div class="misp-page-switcher" ng-show="page.crop">
             <div id="misp-image" ng-controller="CropCtrl">
-               <img id="misp-preview" src="<?php 
+               <img id="misp-preview" src="<?php
 					echo $editor_image;
                ?>"/>
-      
+
                <div id="misp-crop-controls">
 						<a ng-click="toggleOptions()" class="button button-secondary" ng-href=""><?php
 							_e( "Options", MISP_DOMAIN ); ?>
@@ -99,7 +102,7 @@ function u( $path ){
 								<li>
 									<!--ui-event="{blur : 'aspectRatioBlur()'}"-->
 									<label for="misp-aspect-ratio"><?php _e( "Aspect Ratio", MISP_DOMAIN ); ?>: </label>
-									<input id="misp-aspect-ratio" 
+									<input id="misp-aspect-ratio"
 											type="number"
 											placeholder="<?php _e( "width/height", MISP_DOMAIN ); ?>"
 											ng-model="aspectRatio" ng-change="changeAR()" name="misp-aspect-ratio"/>
@@ -134,9 +137,9 @@ function u( $path ){
 									<label for="mispFitCrop">
 										<?php _e( "Fit crop to thumbnail by adding border" ); ?>
 									</label>
-									<input id="mispFitCrop" 
-												name="misp-fit-crop" 
-												type="checkbox" 
+									<input id="mispFitCrop"
+												name="misp-fit-crop"
+												type="checkbox"
 												ng-model="mispFitCrop"
 												ng-click="fitToCrop()"/>
 									<span ng-click="fitToCrop()">{{ mispFitCropColor }}</span>
@@ -160,28 +163,28 @@ function u( $path ){
 						<th title="<?php _e("crop"); ?>"><?php _e( "C" ); ?></th>
                         <th class="center">
                            <span class="misp-thumbnails-menu">
-                              <i ng-show="anyProposed()" 
+                              <i ng-show="anyProposed()"
                                  ng-click="save()"
                                  id="misp-save-all"
                                  title="<?php _e( "Save all", MISP_DOMAIN ); ?>"
                                  class="fa-save"></i>
-                              <i ng-show="anyProposed()" 
+                              <i ng-show="anyProposed()"
                                  ng-click="trashAll(); $event.stopPropagation()"
                                  id="misp-reset-all"
                                  title="<?php _e( "Reset all", MISP_DOMAIN ); ?>"
                                  class="fa-trash-o"></i>
                               <i ng-click="view(anyProposed());"
-                                 id="misp-view-modified" 
-                                 title="<?php _e( 'View all/modified', MISP_DOMAIN ); ?>" 
+                                 id="misp-view-modified"
+                                 title="<?php _e( 'View all/modified', MISP_DOMAIN ); ?>"
                                  class="fa-search"></i>
                            </span>
                         </th>
                      </tr>
                   </thead>
                   <tbody>
-                     <tr ng-class="'selected-'+thumbnail.selected" 
+                     <tr ng-class="'selected-'+thumbnail.selected"
                            ng-click="toggleSelected(thumbnail)"
-                           ng-class-odd="'alternate'" 
+                           ng-class-odd="'alternate'"
                            ng-repeat="thumbnail in thumbnails">
                         <td class="center">
                            <input type="checkbox"
@@ -196,14 +199,14 @@ function u( $path ){
                         <td>{{ thumbnail.crop }}</td>
                         <td class="center misp-thumbnail-options">
                            <span class="misp-thumbnail-menu">
-                              <i ng-show="thumbnail.proposed" 
+                              <i ng-show="thumbnail.proposed"
                                  ng-click="save(thumbnail)"
                                  title="<?php _e( "Save", MISP_DOMAIN ); ?>" class="fa-save"></i>
-                              <i ng-show="thumbnail.proposed" 
+                              <i ng-show="thumbnail.proposed"
                                  ng-click="trash(thumbnail); $event.stopPropagation()"
                                  title="<?php _e( "Reset", MISP_DOMAIN ); ?>" class="fa-trash-o"></i>
-                              <i ng-show="thumbnail.proposed" 
-                                 ng-click="changePage('view'); view(thumbnail.name); $event.stopPropagation();" 
+                              <i ng-show="thumbnail.proposed"
+                                 ng-click="changePage('view'); view(thumbnail.name); $event.stopPropagation();"
                                  title="<?php _e( "Compare/View", MISP_DOMAIN ); ?>" class="fa-search"></i>
                            </span>
                         </td>
@@ -223,9 +226,9 @@ function u( $path ){
                    <h4><?php _e( "Current Thumbnails", MISP_DOMAIN ); ?></h4>
                    <ul id="misp-remember-list">
                        <li ng-repeat="thumbnail in thumbnails | filter:{selected:true}">
-                           <img ng-src="{{ thumbnail.current.url | randomizeUrl }}" 
+                           <img ng-src="{{ thumbnail.current.url | randomizeUrl }}"
                                    ng-show="thumbnail.current"
-                                   alt="{{ thumbnail.name }}" 
+                                   alt="{{ thumbnail.name }}"
                                    title="{{ thumbnail.name }}"/>
                            <span title="{{ thumbnail.name }}" class="no-current-image" ng-hide="thumbnail.current">
                                <i class="fa-exclamation-circle"></i>
@@ -236,7 +239,7 @@ function u( $path ){
             </div>
             </div>
             <div class="misp-page-switcher" ng-show="page.view" ng-controller="ViewCtrl">
-               <div class="misp-display-thumbnail" 
+               <div class="misp-display-thumbnail"
                      ng-repeat="thumbnail in thumbnails | filter:viewFilterFunc | orderBy:orderBy">
                   <div class="misp-display-thumbnail-image" ng-class="thumbnailClass(thumbnail)">
                      <div class="misp-display-thumbnail-menu" ng-show="thumbnail.proposed">
@@ -246,14 +249,14 @@ function u( $path ){
                         <br/>
                         <button ng-click="trash(thumbnail); $event.stopPropagation()" ng-show="thumbnail.showProposed"><i class="fa-trash-o"></i></button>
                      </div>
-                     <div 
+                     <div
                         ng-dblclick="changePage('crop');$event.stopPropagation();"
-                        ng-click="thumbnail.selected = !thumbnail.selected;updateSelected();" 
+                        ng-click="thumbnail.selected = !thumbnail.selected;updateSelected();"
                         ng-hide="thumbnail.showProposed">
                         <span ng-show="thumbnail.proposed"><strong><?php _e( "Original", MISP_DOMAIN ); ?>: {{ thumbnail.name }}</strong><br/></span>
-                        <img ng-src="{{ thumbnail.current.url | randomizeUrl }}" 
+                        <img ng-src="{{ thumbnail.current.url | randomizeUrl }}"
                               ng-show="thumbnail.current"
-                              alt="{{ thumbnail.name }}" 
+                              alt="{{ thumbnail.name }}"
                               title="{{ thumbnail.name }}"/>
                         <span class="no-current-image" ng-hide="thumbnail.current">
                            <i class="fa-exclamation-circle"></i>
@@ -266,9 +269,9 @@ function u( $path ){
                         ng-show="thumbnail.showProposed">
                         <span><strong><?php _e( "Proposed", MISP_DOMAIN ); ?>: {{ thumbnail.name }}</strong><br/></span>
                               <!--ng-click="selectThumb(thumbnail)"-->
-                        <img ng-src="{{ thumbnail.proposed.url | randomizeUrl }}" 
+                        <img ng-src="{{ thumbnail.proposed.url | randomizeUrl }}"
                               ng-show="thumbnail.showProposed"
-                              alt="{{ thumbnail.name }}" 
+                              alt="{{ thumbnail.name }}"
                               title="{{ thumbnail.name }}"/>
                      </div>
                   </div>
@@ -291,10 +294,10 @@ function enqueue_script_filter($tag, $handle) {
 
 function enqueue_last() {
 	wp_enqueue_script(
-		'misp-require', 
+		'misp-require',
 		MISP_PLUGINURL . "apps/requirejs/require.js",
-		null, 
-		MISP_VERSION, 
+		null,
+		MISP_VERSION,
 		true
 	);
 }
@@ -308,10 +311,10 @@ if ( $options['misp_debug'] ) {
 }
 else {
 	wp_enqueue_script(
-		'misp-min-js', 
+		'misp-min-js',
 		MISP_PLUGINURL . "js-build/main.js",
-		null, 
-		MISP_VERSION, 
+		null,
+		MISP_VERSION,
 		true
 	);
 }
