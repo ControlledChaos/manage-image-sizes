@@ -20,7 +20,7 @@
  * License URI:  https://www.gnu.org/licenses/gpl.txt
  * Text Domain:  manage-image-sizes
  * Domain Path:  /languages
- * Tested up to: 5.0.0
+ * Tested up to: 5.1.1
  */
 
 /**
@@ -59,7 +59,7 @@ require_once( MISP_PLUGINPATH . 'php/log.php' );
 /*
  * Option Functionality
  */
-function misp_get_option_name(){
+function misp_get_option_name() {
 
 	global $current_user;
 
@@ -163,9 +163,8 @@ function misp_update_user_options() {
 	}
 
 	update_option( misp_get_option_name(), $options );
+
 }
-
-
 
 /**
  * Get the URL for the PTE interface
@@ -539,3 +538,43 @@ function misp_wp_ajax_imgedit_preview_wrapper() {
 /** End Settings Hooks **/
 
 load_plugin_textdomain( MISP_DOMAIN, false, basename( MISP_PLUGINPATH ) . DIRECTORY_SEPARATOR . 'i18n' );
+
+/**
+ * Add links to the plugin settings pages on the plugins page.
+ *
+ * Change the links to those which fill your needs.
+ *
+ * Uses the universal slug partial for admin pages. Set this
+ * slug in the core plugin file.
+ *
+ * @param  array  $links Default plugin links on the 'Plugins' admin page.
+ * @param  object $file Reference the root plugin file with header.
+ * @since  1.0.0
+ * @return mixed[] Returns HTML strings for the settings pages link.
+ *                 Returns an array of custom links with the default plugin links.
+ * @link   https://codex.wordpress.org/Plugin_API/Filter_Reference/plugin_action_links_(plugin_file_name)
+ */
+function misp_settings_links( $links ) {
+
+	if ( is_admin() ) {
+
+		$url = admin_url( 'options-general.php?page=misp' );
+
+		// Create new settings link array as a variable.
+		$about_page = [
+			sprintf(
+				'<a href="%1s" class="misp-settings-link">%2s</a>',
+				$url,
+				esc_attr( 'Settings', MISP_DOMAIN )
+			),
+		];
+
+		// Merge the new settings array with the default array.
+		return array_merge( $about_page, $links );
+
+	}
+
+}
+
+// Filter the default settings links with new array.
+add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), 'misp_settings_links' );
