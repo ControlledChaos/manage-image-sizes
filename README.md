@@ -8,4 +8,4 @@ A ClassicPress/WordPress plugin to add and manually edit image sizes. Reworked f
 
 The Post Thumbnail Editor has long been abandoned so it's time update things, run through the TODOs in the comments, and fix the conflict with debug mode.
 
-This also includes the Post Thumbnails Extras plugin files for registering additional files.
+This also includes the Post Thumbnails Extras plugin files for registering additional image sizes.
