@@ -55,12 +55,13 @@ final class Admin {
 	 * Constructor method
 	 *
 	 * @since  1.0.0
-	 * @access private
+	 * @access public
 	 * @return self
 	 */
-	private function __construct() {
+	public function __construct() {
 
-
+		// Add image sizes to insert media UI.
+		add_filter( 'image_size_names_choose', [ $this, 'insert_custom_image_sizes' ] );
 
 	}
 
@@ -75,6 +76,41 @@ final class Admin {
 
 		// The core settings class for the plugin.
 		require_once MISP_PATH . 'admin/class-settings.php';
+
+	}
+
+	/**
+	 * Add image sizes to media UI
+	 *
+	 * Adds custom image sizes to "Insert Media" user interface
+	 * and adds custom class to the `<img>` tag.
+	 *
+	 * @since  1.0.0
+	 * @access public
+	 * @param  array $sizes Gets the array of image size names.
+	 * @global array $_wp_additional_image_sizes Gets the array of custom image size names.
+	 * @return array $sizes Returns an array of image size names.
+	 */
+	function insert_custom_image_sizes( $sizes ) {
+
+		// Access global variables.
+		global $_wp_additional_image_sizes;
+
+		// Return default sizes if no custom sizes.
+		if ( empty( $_wp_additional_image_sizes ) ) {
+			return $sizes;
+		}
+
+		// Capitalize custom image size names and remove hyphens.
+		foreach ( $_wp_additional_image_sizes as $id => $data ) {
+
+			if ( ! isset( $sizes[$id] ) ) {
+				$sizes[$id] = ucwords( str_replace( '-', ' ', $id ) );
+			}
+		}
+
+		// Return the modified array of sizes.
+		return $sizes;
 
 	}
 

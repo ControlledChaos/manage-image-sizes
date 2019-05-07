@@ -93,7 +93,7 @@ class PTXShortcode {
 	public function image_sizes ( $sizes ) {
 		if ( false !== $ptx_post_thumbnails = get_option( 'ptx_post_thumbnails' ) ) {
 			foreach ( $ptx_post_thumbnails as $thumbnail ){
-				$sizes[$thumbnail['name']] = $thumbnail['name'];
+				$sizes[$thumbnail['name']] = ucwords( str_replace( '-', ' ', $thumbnail['name'] ) );
 			}
 		}
 		return $sizes;

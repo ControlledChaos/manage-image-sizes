@@ -213,7 +213,7 @@ function u( $path ){
                   </tbody>
                </table>
                <div id="aspect-ratio-selector" ng-show="aspectRatios.length">
-                  <?php _e( "These thumbnails have an aspect ratio set:", MISP_DOMAIN ); ?>
+                  <h4><?php _e( "These thumbnails have an aspect ratio set:", MISP_DOMAIN ); ?></h4>
                   <ul>
                      <li ng-repeat="aspectRatio in aspectRatios | orderBy:size">
                         <a ng-click="selectAspectRatio(aspectRatio)" ng-href="">
