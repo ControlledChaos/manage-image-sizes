@@ -73,7 +73,7 @@ class PTXShortcode {
 	 */
 	public function enqueue_scripts() {
 		wp_enqueue_script( 'ptx-shortcode'
-			, MISP_PLUGINURL . 'js/media-shortcode.js'
+			, MISP_URL . 'js/media-shortcode.js'
 			, array('media-views', 'media-editor')
 			, false, true
 		);

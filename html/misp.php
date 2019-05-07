@@ -2,7 +2,7 @@
 global $post, $misp_iframe;
 function u( $path ){
    printf( "%s%s?%s",
-	   MISP_PLUGINURL,
+	   MISP_URL,
 	   $path,
 	   MISP_VERSION
    );
@@ -288,13 +288,13 @@ function u( $path ){
 function enqueue_script_filter($tag, $handle) {
 	if ('misp-require' !== $handle)
 		return $tag;
-	return str_replace(' src', ' data-main="' . MISP_PLUGINURL . 'js/main" src', $tag);
+	return str_replace(' src', ' data-main="' . MISP_URL . 'js/main" src', $tag);
 }
 
 function enqueue_last() {
 	wp_enqueue_script(
 		'misp-require',
-		MISP_PLUGINURL . "apps/requirejs/require.js",
+		MISP_URL . "apps/requirejs/require.js",
 		null,
 		MISP_VERSION,
 		true
@@ -311,7 +311,7 @@ if ( $options['misp_debug'] ) {
 else {
 	wp_enqueue_script(
 		'misp-min-js',
-		MISP_PLUGINURL . "js-build/main.js",
+		MISP_URL . "js-build/main.js",
 		null,
 		MISP_VERSION,
 		true

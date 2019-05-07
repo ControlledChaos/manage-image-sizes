@@ -1,7 +1,13 @@
 <?php
 
-class PteLogMessage
-{
+// TODO:
+// * Find the best place for the require log (only when it's really needed, create an init function?)
+// * Change all the log calls?
+// * Rip out everything that's not a CONSTANT or a hook in here
+// * Make this an object
+// * Add a tour for new users
+
+class PteLogMessage {
 	public static $ERROR = 1;
 	public static $WARN  = 2;
 	public static $INFO  = 4;
@@ -63,7 +69,7 @@ class PteLogChromeHandler implements PteLogHandler {
 
 	public function __construct() {
 		if ( !class_exists( 'ChromePhp' ) ) {
-			require_once( MISP_PLUGINPATH . 'php/chromephp/ChromePhp.php' );
+			require_once( MISP_PATH . 'php/chromephp/ChromePhp.php' );
 		}
 		ChromePhp::getInstance()->addSetting(ChromePhp::BACKTRACE_LEVEL, 5);
 	}

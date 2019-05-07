@@ -40,28 +40,237 @@
  * along with Manage Image Sizes. If not, see {URI to Plugin License}.
  */
 
-/*
- * Useful constants
- */
-define( 'MISP_PLUGINURL', plugins_url( basename( dirname( __FILE__ ) ) ) . '/' );
-define( 'MISP_PLUGINPATH', dirname( __FILE__ ) . '/' );
-define( 'MISP_DOMAIN', 'manage-image-sizes' );
-define( 'MISP_VERSION', '1.0.0' );
-
-// TODO:
-// * Find the best place for the require log (only when it's really needed, create an init function?)
-// * Change all the log calls?
-// * Rip out everything that's not a CONSTANT or a hook in here
-// * Make this an object
-// * Add a tour for new users
-require_once( MISP_PLUGINPATH . 'php/log.php' );
+// If this file is called directly, abort.
+if ( ! defined( 'WPINC' ) ) {
+	die;
+}
 
 /**
- * Get the PTE Extras files
+ * The core plugin class
  *
- * @todo Rename directory.
+ * Defines constants, gets the initialization class file
+ * plus the activation and deactivation classes.
+ *
+ * @since  1.0.0
+ * @access public
  */
-require_once( MISP_PLUGINPATH . 'extras/extras.php' );
+
+// First check for other classes with the same name.
+if ( ! class_exists( 'Manage_Image_Sizes' ) ) :
+	final class Manage_Image_Sizes {
+
+		/**
+		 * Instance of the class
+		 *
+		 * @since  1.0.0
+		 * @access public
+		 * @return object Returns the instance.
+		 */
+		public static function instance() {
+
+			// Varialbe for the instance to be used outside the class.
+			static $instance = null;
+
+			if ( is_null( $instance ) ) {
+
+				// Set variable for new instance.
+				$instance = new self;
+
+				// Define plugin constants.
+				$instance->constants();
+
+				// Require the core plugin class files.
+				$instance->dependencies();
+
+			}
+
+			// Return the instance.
+			return $instance;
+
+		}
+
+		/**
+		 * Constructor method
+		 *
+		 * @since  1.0.0
+		 * @access protected
+		 * @return void Constructor method is empty.
+		 *              Change to `self` if used.
+		 */
+		protected function __construct() {}
+
+		/**
+		 * Define plugin constants
+		 *
+		 * Change the prefix, the text domain, and the default meta image
+		 * to that which suits the needs of your website.
+		 *
+		 * Change the version as appropriate.
+		 *
+		 * @since  1.0.0
+		 * @access private
+		 * @return void
+		 */
+		private function constants() {
+
+			/**
+			 * Plugin version
+			 *
+			 * Keeping the version at 1.0.0 as this is a starter plugin but
+			 * you may want to start counting as you develop for your use case.
+			 *
+			 * @since  1.0.0
+			 * @return string Returns the latest plugin version.
+			 */
+			if ( ! defined( 'MISP_VERSION' ) ) {
+				define( 'MISP_VERSION', '1.0.0' );
+			}
+
+			/**
+			 * Text domain
+			 *
+			 * @since  1.0.0
+			 * @return string Returns the text domain of the plugin.
+			 *
+			 * @todo   Replace all strings with constant.
+			 */
+			if ( ! defined( 'MISP_DOMAIN' ) ) {
+				define( 'MISP_DOMAIN', 'manage-image-sizes' );
+			}
+
+			/**
+			 * Plugin folder path
+			 *
+			 * @since  1.0.0
+			 * @return string Returns the filesystem directory path (with trailing slash)
+			 *                for the plugin __FILE__ passed in.
+			 */
+			if ( ! defined( 'MISP_PATH' ) ) {
+				define( 'MISP_PATH', plugin_dir_path( __FILE__ ) );
+				// define( 'MISP_PATH', dirname( __FILE__ ) . '/' );
+			}
+
+			/**
+			 * Plugin folder URL
+			 *
+			 * @since  1.0.0
+			 * @return string Returns the URL directory path (with trailing slash)
+			 *                for the plugin __FILE__ passed in.
+			 */
+			if ( ! defined( 'MISP_URL' ) ) {
+				// define( 'MISP_URL', plugin_dir_url( __FILE__ ) );
+				define( 'MISP_URL', plugins_url( basename( dirname( __FILE__ ) ) ) . '/' );
+			}
+
+		}
+
+		/**
+		 * Throw error on object clone.
+		 *
+		 * @since  1.0.0
+		 * @access private
+		 * @return void
+		 */
+		private function __clone() {
+
+			// Cloning instances of the class is forbidden.
+			_doing_it_wrong( __FUNCTION__, __( 'This is not allowed.', 'manage-image-sizes' ), '1.0.0' );
+
+		}
+
+		/**
+		 * Disable unserializing of the class.
+		 *
+		 * @since  1.0.0
+		 * @access private
+		 * @return void
+		 */
+		private function __wakeup() {
+
+			// Unserializing instances of the class is forbidden.
+			_doing_it_wrong( __FUNCTION__, __( 'This is not allowed.', 'manage-image-sizes' ), '1.0.0' );
+
+		}
+
+		/**
+		 * Require the core plugin class files.
+		 *
+		 * @since  1.0.0
+		 * @access private
+		 * @return void Gets the file which contains the core plugin class.
+		 */
+		private function dependencies() {
+
+			require_once( MISP_PATH . 'php/log.php' );
+
+			/**
+			 * Get the PTE Extras files
+			 *
+			 * @todo Rename directory.
+			 */
+			require_once MISP_PATH . 'extras/extras.php';
+
+			// The hub of all other dependency files.
+			require_once MISP_PATH . 'includes/class-init.php';
+
+			// Include the activation class.
+			require_once MISP_PATH . 'includes/class-activate.php';
+
+			// Include the deactivation class.
+			require_once MISP_PATH . 'includes/class-deactivate.php';
+
+		}
+
+	}
+	// End core plugin class.
+
+	/**
+	 * Put an instance of the plugin class into a function.
+	 *
+	 * @since  1.0.0
+	 * @access public
+	 * @return object Returns the instance of the `Manage_Image_Sizes` class.
+	 */
+	function misp_core() {
+
+		return Manage_Image_Sizes::instance();
+
+	}
+
+	// Begin plugin functionality.
+	misp_core();
+
+// End the check for the plugin class.
+endif;
+
+/**
+ * Register the activaction & deactivation hooks.
+ *
+ * @since  1.0.0
+ * @access public
+ * @return void
+ */
+register_activation_hook( __FILE__, '\misp_activate_plugin' );
+register_deactivation_hook( __FILE__, '\misp_deactivate_plugin' );
+
+/**
+ * The code that runs during plugin activation.
+ *
+ * @since  1.0.0
+ * @access public
+ * @return void
+ */
+function misp_activate_plugin() {
+
+	// Run the activation class.
+	misp_activate();
+
+}
+
+// Bail out now if the core class was not run.
+if ( ! function_exists( 'misp_core' ) ) {
+	return;
+}
 
 /*
  * Option Functionality
@@ -142,7 +351,7 @@ function misp_get_options() {
 
 function misp_update_user_options() {
 
-	require_once( MISP_PLUGINPATH . 'php/options.php' );
+	require_once( MISP_PATH . 'php/options.php' );
 
 	$options = misp_get_user_options();
 
@@ -231,13 +440,13 @@ function misp_admin_media_scripts( $post_type ) {
 
 	if ( $post_type == "attachment" ) {
 
-		wp_enqueue_script( 'misp', MISP_PLUGINURL . 'apps/coffee-script.js', [ 'underscore' ], MISP_VERSION );
+		wp_enqueue_script( 'misp', MISP_URL . 'apps/coffee-script.js', [ 'underscore' ], MISP_VERSION );
 		add_action( 'admin_print_footer_scripts', 'misp_enable_editor_js', 100 );
 
 	} else {
 		//add_action( 'admin_print_footer_scripts', 'misp_enable_media_js', 100 );
-		wp_enqueue_script( 'misp', MISP_PLUGINURL . 'js/snippets/misp_enable_media.js', [ 'media-views' ], MISP_VERSION, true);
-		wp_enqueue_style( 'misp', MISP_PLUGINURL . 'css/misp-media.css', null, MISP_VERSION);
+		wp_enqueue_script( 'misp', MISP_URL . 'js/snippets/misp_enable_media.js', [ 'media-views' ], MISP_VERSION, true);
+		wp_enqueue_style( 'misp', MISP_URL . 'css/misp-media.css', null, MISP_VERSION);
 	}
 
 	wp_localize_script(
@@ -252,11 +461,11 @@ function misp_admin_media_scripts( $post_type ) {
 }
 
 function misp_enable_editor_js() {
-	injectCoffeeScript( MISP_PLUGINPATH . 'js/snippets/editor.coffee' );
+	injectCoffeeScript( MISP_PATH . 'js/snippets/editor.coffee' );
 }
 
 function misp_enable_media_js() {
-	injectCoffeeScript( MISP_PLUGINPATH . 'js/snippets/media.coffee' );
+	injectCoffeeScript( MISP_PATH . 'js/snippets/media.coffee' );
 }
 
 function injectCoffeeScript( $coffeeFile ) {
@@ -299,7 +508,7 @@ function misp_add_thickbox() {
 
 	wp_enqueue_script(
 		'misp-fix-thickbox',
-		MISP_PLUGINURL . 'js/snippets/misp-fix-thickbox.js',
+		MISP_URL . 'js/snippets/misp-fix-thickbox.js',
 		array( 'media-upload' ),
 		MISP_VERSION
 	);
@@ -310,7 +519,7 @@ function misp_add_thickbox() {
 add_action( 'wp_ajax_misp_ajax', 'misp_ajax' );
 function misp_ajax() {
 	// Move all adjuntant functions to a separate file and include that here
-	require_once( MISP_PLUGINPATH . 'php/functions.php' );
+	require_once( MISP_PATH . 'php/functions.php' );
 	PteLogger::debug( 'PARAMETERS: ' . print_r( $_REQUEST, true ) );
 
 	//header('Content-type: application/json');
@@ -384,7 +593,7 @@ function misp_load_media_library() {
 		return;
 	}
 
-	wp_enqueue_script( 'misp', MISP_PLUGINURL . 'js/snippets/misp_enable_media.js', null, MISP_VERSION, true);
+	wp_enqueue_script( 'misp', MISP_URL . 'js/snippets/misp_enable_media.js', null, MISP_VERSION, true);
 	wp_localize_script(
 		'misp',
 		'mispL10n',
@@ -425,7 +634,7 @@ add_action( 'load-options.php', 'misp_options' );
 
 function misp_options() {
 
-	require_once( MISP_PLUGINPATH . 'php/options.php' );
+	require_once( MISP_PATH . 'php/options.php' );
 	misp_options_init();
 
 }
@@ -471,7 +680,7 @@ function misp_admin_menu() {
 
 function misp_launch_options_page() {
 
-	require_once( MISP_PLUGINPATH . 'php/options.php' );
+	require_once( MISP_PATH . 'php/options.php' );
 	misp_options_page();
 
 }
@@ -515,7 +724,7 @@ function misp_edit_setup() {
 	$post  = get_post( $post_id );
 	$title = __( 'Manage Image Sizes', MISP_DOMAIN );
 
-	include_once( MISP_PLUGINPATH . 'php/functions.php' );
+	include_once( MISP_PATH . 'php/functions.php' );
 
 	// Add the scripts and styles.
 	wp_enqueue_script( 'jquery' );
@@ -537,14 +746,14 @@ function misp_edit_setup() {
 add_action( 'wp_ajax_misp_imgedit_preview','misp_wp_ajax_imgedit_preview_wrapper' );
 
 function misp_wp_ajax_imgedit_preview_wrapper() {
-	require_once( MISP_PLUGINPATH . 'php/overwrite_imgedit_preview.php' );
+	require_once( MISP_PATH . 'php/overwrite_imgedit_preview.php' );
 	misp_wp_ajax_imgedit_preview();
 }
 
 
 /** End Settings Hooks **/
 
-load_plugin_textdomain( MISP_DOMAIN, false, basename( MISP_PLUGINPATH ) . DIRECTORY_SEPARATOR . 'i18n' );
+load_plugin_textdomain( MISP_DOMAIN, false, basename( MISP_PATH ) . DIRECTORY_SEPARATOR . 'i18n' );
 
 /**
  * Add links to the plugin settings pages on the plugins page.

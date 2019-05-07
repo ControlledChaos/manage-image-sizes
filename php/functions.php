@@ -3,7 +3,7 @@
  * TODO: add helper functions to get various links to different functions
  */
 
-require_once(MISP_PLUGINPATH . 'php/log.php');
+require_once(MISP_PATH . 'php/log.php');
 
 function misp_require_json() {
 	if ( function_exists( 'ob_start' ) ){
@@ -282,7 +282,7 @@ function misp_body( $id ){
 		
 	}
 
-	require( MISP_PLUGINPATH . "html/misp.php" );
+	require( MISP_PATH . "html/misp.php" );
 	return ob_get_clean();
 }
 
@@ -551,8 +551,8 @@ function misp_resize_images(){
 }
 
 function misp_image_editors( $editor_array ){
-	require_once( MISP_PLUGINPATH . 'php/class-misp-image-editor-gd.php' );
-	require_once( MISP_PLUGINPATH . 'php/class-misp-image-editor-imagick.php' );
+	require_once( MISP_PATH . 'php/class-misp-image-editor-gd.php' );
+	require_once( MISP_PATH . 'php/class-misp-image-editor-imagick.php' );
 	array_unshift( $editor_array, 'MISP_Image_Editor_Imagick', 'MISP_Image_Editor_GD' );
 	return $editor_array;
 }
