@@ -56,6 +56,13 @@ define( 'MISP_VERSION', '1.0.0' );
 // * Add a tour for new users
 require_once( MISP_PLUGINPATH . 'php/log.php' );
 
+/**
+ * Get the PTE Extras files
+ *
+ * @todo Rename directory.
+ */
+require_once( MISP_PLUGINPATH . 'extras/extras.php' );
+
 /*
  * Option Functionality
  */
