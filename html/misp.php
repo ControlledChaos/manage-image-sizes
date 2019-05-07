@@ -44,7 +44,6 @@ function u( $path ){
    <?php if ( !isset( $_GET['title'] ) || $_GET['title'] != 'false' ) : ?>
    <h1><?php _e( 'Manage Image Sizes', MISP_DOMAIN );?></h1>
    <p class="description"><?php _e( 'Crop images by size and by aspect ratio.', MISP_DOMAIN );?></p>
-   <hr />
    <?php echo sprintf(
 	   '<h2>%1s %2s</h2>',
 	   __( 'Editing ', MISP_DOMAIN ),
