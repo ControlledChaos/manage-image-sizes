@@ -31,7 +31,7 @@ class PTXOptions {
 		// Add a section for displaying other Post Thumbnails and their metadata
 		// (e.g. width, height, crop)
 		add_settings_section( 'ptx-other-post-thumbnails'
-			, __( 'Additional Image Sizes', MISP_DOMAIN )
+			, __( 'Other Image Sizes', MISP_DOMAIN )
 			, array( $this, 'other_post_thumbnails_html' )
 			, 'media'
 		);
@@ -153,11 +153,12 @@ EOT;
 		</tr>
 
 EOT;
-		return sprintf( $html
-			, __( 'Delete', MISP_DOMAIN )
-			, __( 'Width', MISP_DOMAIN )
-			, __( 'Height', MISP_DOMAIN )
-			, __( 'Crop to exact dimensions', MISP_DOMAIN )
+		return sprintf(
+			$html,
+			__( 'Delete', MISP_DOMAIN ),
+			__( 'Width', MISP_DOMAIN ),
+			__( 'Height', MISP_DOMAIN ),
+			__( 'Crop ', MISP_DOMAIN ) . ucwords( str_replace( '-', ' ', $thumbnail['name'] ) ) . __( ' to exact dimensions', MISP_DOMAIN )
 		);
 	}
 
@@ -232,6 +233,13 @@ EOT;
 	 * Display post thumbnail metadata for other post thumbnails defined elsewhere
 	 */
 	public function other_post_thumbnails_html() {
+
+		// Add a descrition to the sizes table.
+		echo sprintf(
+			'<p class="description">%1s</p><br />',
+			__( 'The following are sizes registered by plugins or by the active theme.' )
+		);
+
 		$thumbnails = $this->get_other_intermediate_image_sizes();
 
 		if ( ! isset( $thumbnails ) || 0 == count( $thumbnails ) ) {
@@ -239,10 +247,10 @@ EOT;
 			return;
 		}
 
-		$name = __( 'Name', MISP_DOMAIN );
-		$width = __( 'Width', MISP_DOMAIN );
+		$name   = __( 'Name', MISP_DOMAIN );
+		$width  = __( 'Width', MISP_DOMAIN );
 		$height = __( 'Height', MISP_DOMAIN );
-		$crop = __( 'Crop', MISP_DOMAIN );
+		$crop   = __( 'Crop', MISP_DOMAIN );
 		$output = <<<EOT
 <style type="text/css" media="all">
 	#ptx-other-post-thumbnails {
@@ -277,18 +285,27 @@ EOT;
 	</tbody>
 </table>
 EOT;
-		$body = "";
-		$row = "<tr><td>%s</td><td>%d</td><td>%d</td><td>%s</td></tr>";
+		$table = '';
+
 		foreach ( $thumbnails as $name => $thumbnail ) {
-			$body .= sprintf( $row
-				, $name
-				, $thumbnail['width']
-				, $thumbnail['height']
-				, ( true == $thumbnail['crop'] ) ? __( 'True' ) : __( 'False' )
+
+			// Get crop parameters.
+			if ( true == $thumbnail['crop'] ) {
+				$crop = __( 'True' );
+			} else {
+				$crop = __( 'False' );
+			}
+
+			$table .= sprintf(
+				'<tr><td>%s</td><td>%d</td><td>%d</td><td>%s</td></tr>',
+				ucwords( str_replace( '-', ' ', $name ) ),
+				$thumbnail['width'],
+				$thumbnail['height'],
+				$crop
 			);
 		}
 
-		print( sprintf( $output, $body ) );
+		print( sprintf( $output, $table ) );
 	}
 
 	/**

@@ -77,9 +77,9 @@ class Settings_Fields_Media {
         /**
          * Image crop settings.
          */
-        add_settings_field( 'misp_hard_crop_medium', __( 'Medium size crop', 'controlled-chaos-plugin' ), [ $this, 'medium_crop' ], 'media', 'default', [ __( 'Crop thumbnail to exact dimensions (normally thumbnails are proportional)', 'controlled-chaos-plugin' ) ] );
+        add_settings_field( 'misp_hard_crop_medium', __( 'Medium crop', 'controlled-chaos-plugin' ), [ $this, 'medium_crop' ], 'media', 'default', [ __( 'Crop Medium size to exact dimensions', 'controlled-chaos-plugin' ) ] );
 
-        add_settings_field( 'misp_hard_crop_large', __( 'Large size crop', 'controlled-chaos-plugin' ), [ $this, 'large_crop' ], 'media', 'default', [ __( 'Crop thumbnail to exact dimensions (normally thumbnails are proportional)', 'controlled-chaos-plugin' ) ] );
+        add_settings_field( 'misp_hard_crop_large', __( 'Large crop', 'controlled-chaos-plugin' ), [ $this, 'large_crop' ], 'media', 'default', [ __( 'Crop Large size to exact dimensions', 'controlled-chaos-plugin' ) ] );
 
         register_setting(
             'media',
