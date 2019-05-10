@@ -91,7 +91,7 @@ final class Admin {
 	 * @global array $_wp_additional_image_sizes Gets the array of custom image size names.
 	 * @return array $sizes Returns an array of image size names.
 	 */
-	function insert_custom_image_sizes( $sizes ) {
+	public function insert_custom_image_sizes( $sizes ) {
 
 		// Access global variables.
 		global $_wp_additional_image_sizes;
