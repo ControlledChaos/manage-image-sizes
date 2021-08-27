@@ -404,7 +404,7 @@ function misp_tmp_dir() {
 
 /** For the "Edit Image" stuff **/
 /* Hook into the Edit Image page */
-add_action( 'dbx_post_advanced', 'misp_edit_form_hook_redirect' );
+add_action( 'add_meta_boxes', 'misp_edit_form_hook_redirect' );
 
 /* Slight redirect so this isn't called on all versions of the media upload page */
 function misp_edit_form_hook_redirect() {
