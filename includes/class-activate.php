@@ -80,7 +80,5 @@ class Manage_Image_Sizes_Activate {
  * @return object Returns an instance of the class.
  */
 function misp_activate() {
-
 	return Manage_Image_Sizes_Activate::instance();
-
 }

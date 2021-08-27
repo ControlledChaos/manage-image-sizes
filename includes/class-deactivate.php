@@ -80,7 +80,5 @@ class Manage_Image_Sizes_Deactivate {
  * @return object Returns an instance of the class.
  */
 function misp_deactivate() {
-
 	return Manage_Image_Sizes_Deactivate::instance();
-
 }

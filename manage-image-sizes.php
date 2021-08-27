@@ -165,34 +165,6 @@ if ( ! class_exists( 'Manage_Image_Sizes' ) ) :
 		}
 
 		/**
-		 * Throw error on object clone.
-		 *
-		 * @since  1.0.0
-		 * @access private
-		 * @return void
-		 */
-		private function __clone() {
-
-			// Cloning instances of the class is forbidden.
-			_doing_it_wrong( __FUNCTION__, __( 'This is not allowed.', 'manage-image-sizes' ), '1.0.0' );
-
-		}
-
-		/**
-		 * Disable unserializing of the class.
-		 *
-		 * @since  1.0.0
-		 * @access private
-		 * @return void
-		 */
-		private function __wakeup() {
-
-			// Unserializing instances of the class is forbidden.
-			_doing_it_wrong( __FUNCTION__, __( 'This is not allowed.', 'manage-image-sizes' ), '1.0.0' );
-
-		}
-
-		/**
 		 * Require the core plugin class files.
 		 *
 		 * @since  1.0.0
@@ -264,6 +236,20 @@ function misp_activate_plugin() {
 
 	// Run the activation class.
 	misp_activate();
+
+}
+
+/**
+ * The code that runs during plugin deactivation.
+ *
+ * @since  1.0.0
+ * @access public
+ * @return void
+ */
+function misp_deactivate_plugin() {
+
+	// Run the deactivation class.
+	misp_deactivate();
 
 }
 
