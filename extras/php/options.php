@@ -115,8 +115,14 @@ EOT;
 			, __( "There are pending changes, are you sure that you want to leave?" ) ) );
 	}
 
-	private static function thumbnail_html( $thumbnail = NULL ) {
-		$value = "value={$thumbnail['name']}";
+	private static function thumbnail_html( $thumbnail = null ) {
+
+		if ( is_array( $thumbnail ) ) {
+			$value = "value={$thumbnail['name']}";
+		} else {
+			$value = '';
+		}
+
 		if ( is_null( $thumbnail ) ) {
 			$thumbnail = array( 'name' => 'new-name'
 				, 'width' => 150
@@ -130,15 +136,15 @@ EOT;
 		<tr valign="top">
 			<th scope="row">
 				<input type="text" class="ptx-thumb-name" $value
-						name="ptx_post_thumbnails[{$thumbnail['name']}][name]" 
-						id="ptx_post_thumbnails[{$thumbnail['name']}][name]" 
+						name="ptx_post_thumbnails[{$thumbnail['name']}][name]"
+						id="ptx_post_thumbnails[{$thumbnail['name']}][name]"
 						placeholder="{$thumbnail['name']}" /><br/>
 				<a href="#" tabindex="999" class="ptx-delete-thumb">%s</a>
 			</th>
 			<td>
 				<label for="ptx_post_thumbnails[{$thumbnail['name']}][width]">%s</label>
-				<input name="ptx_post_thumbnails[{$thumbnail['name']}][width]" 
-						type="number" step="1" min="0" 
+				<input name="ptx_post_thumbnails[{$thumbnail['name']}][width]"
+						type="number" step="1" min="0"
 						id="ptx_post_thumbnails[{$thumbnail['name']}][width]" value="{$thumbnail['width']}" class="small-text" />
 
 				<label for="ptx_post_thumbnails[{$thumbnail['name']}][height]">%s</label>
@@ -165,7 +171,7 @@ EOT;
 	/**
 	 * Sanitize the data
 	 *
-	 * TODO: Leave an updated message if the size > 2000 letting them know that 
+	 * TODO: Leave an updated message if the size > 2000 letting them know that
 	 *       '0' is unlimited and might be a better choice
 	 */
 	public function sanitize_post_thumbnails( $input ) {
