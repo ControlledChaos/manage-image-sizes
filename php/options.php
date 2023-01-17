@@ -13,7 +13,7 @@ function misp_options_init() {
 
 	register_setting(
 		'misp_options',
-		MISP\get_option_name(),
+		get_option_name(),
 		'misp_options_validate'
 	);
 
@@ -175,7 +175,7 @@ function misp_site_options_validate( $input ){
 }
 
 function misp_options_validate( $input ){
-	$options = MISP\misp_get_user_options();
+	$options = misp_get_user_options();
 
 	if ( isset( $input['reset'] ) ){
 		return array();
@@ -199,7 +199,7 @@ function misp_options_validate( $input ){
 	if ( $input['misp_imgedit_max_size'] != "" ){
 		$tmp_size = (int) preg_replace( "/[\D]/", "", $input['misp_imgedit_max_size'] );
 		if ( $tmp_size < 0 || $tmp_size > 10000 ) {
-			add_settings_error( MISP\get_option_name()
+			add_settings_error( get_option_name()
 				, 'misp_options_error'
 				, __( "Crop Size must be between 0 and 10000.", MISP_DOMAIN ) );
 		}
@@ -213,8 +213,8 @@ function misp_options_validate( $input ){
 }
 
 function misp_debug_display(){
-	$options = MISP\misp_get_user_options();
-	$option_label = MISP\get_option_name();
+	$options = misp_get_user_options();
+	$option_label = get_option_name();
 ?>
 	<span><input type="checkbox" name="<?php
 	print $option_label;
@@ -246,8 +246,8 @@ function misp_debug_display(){
 }
 
 function misp_crop_save_display(){
-	$options = MISP\misp_get_user_options();
-	$option_label = MISP\get_option_name();
+	$options = misp_get_user_options();
+	$option_label = get_option_name();
 ?>
 	<span><input type="checkbox" name="<?php
 	print $option_label;
@@ -259,8 +259,8 @@ function misp_crop_save_display(){
 }
 
 function misp_imgedit_size_display(){
-	$options = MISP\misp_get_user_options();
-	$option_label = MISP\get_option_name();
+	$options = misp_get_user_options();
+	$option_label = get_option_name();
 ?>
 	<span><input class="small-text" type="text"
 			name="<?php print $option_label; ?>[misp_imgedit_max_size]"
@@ -284,7 +284,7 @@ function misp_imgedit_size_display(){
 function misp_reset_display(){
 ?>
 	<input class="button-secondary" name="<?php
-	echo( MISP\get_option_name() );
+	echo( get_option_name() );
 	?>[reset]" type="submit" value="<?php esc_attr_e( 'Reset User Options', MISP_DOMAIN ); ?>" />
 <?php
 }
@@ -307,7 +307,7 @@ function misp_gcd($a, $b){
 
 function misp_sizes_display(){
 	require_once( 'functions.php' );
-	$options = MISP\misp_get_options();
+	$options = misp_get_options();
 
 	// Table Header
 ?>
@@ -336,7 +336,7 @@ function misp_sizes_display(){
 }
 
 function misp_jpeg_compression_display(){
-	$options = MISP\misp_get_site_options();
+	$options = misp_get_site_options();
 ?>
 	<span><input class="small-text" type="text"
 			 name="misp-site-options[misp_jpeg_compression]"
@@ -349,7 +349,7 @@ function misp_jpeg_compression_display(){
 }
 
 function misp_cache_buster_display(){
-	$options = MISP\misp_get_site_options();
+	$options = misp_get_site_options();
 ?>
 	<span><input type="checkbox" name="misp-site-options[misp_cache_buster]" <?php
 	if ( $options['cache_buster'] ): print "checked"; endif;
