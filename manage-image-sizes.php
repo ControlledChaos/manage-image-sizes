@@ -7,7 +7,6 @@
  * @author      Greg Sweet <greg@ccdzine.com>
  * @copyright   Copyright © 2019, Greg Sweet
  * @link        https://github.com/ControlledChaos/manage-image-sizes
- * @link        https://github.com/ControlledChaos/manage-image-sizes
  * @license     GPL-3.0+ http://www.gnu.org/licenses/gpl-3.0.txt
  *
  * Plugin Name:  Manage Image Sizes
@@ -46,177 +45,72 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 /**
- * The core plugin class
+ * Plugin version
  *
- * Defines constants, gets the initialization class file
- * plus the activation and deactivation classes.
+ * Keeping the version at 1.0.0 as this is a starter plugin but
+ * you may want to start counting as you develop for your use case.
  *
  * @since  1.0.0
- * @access public
+ * @return string Returns the latest plugin version.
  */
-
-// First check for other classes with the same name.
-if ( ! class_exists( 'Manage_Image_Sizes' ) ) :
-	final class Manage_Image_Sizes {
-
-		/**
-		 * Instance of the class
-		 *
-		 * @since  1.0.0
-		 * @access public
-		 * @return object Returns the instance.
-		 */
-		public static function instance() {
-
-			// Varialbe for the instance to be used outside the class.
-			static $instance = null;
-
-			if ( is_null( $instance ) ) {
-
-				// Set variable for new instance.
-				$instance = new self;
-
-				// Define plugin constants.
-				$instance->constants();
-
-				// Require the core plugin class files.
-				$instance->dependencies();
-
-			}
-
-			// Return the instance.
-			return $instance;
-
-		}
-
-		/**
-		 * Constructor method
-		 *
-		 * @since  1.0.0
-		 * @access protected
-		 * @return void Constructor method is empty.
-		 *              Change to `self` if used.
-		 */
-		protected function __construct() {}
-
-		/**
-		 * Define plugin constants
-		 *
-		 * Change the prefix, the text domain, and the default meta image
-		 * to that which suits the needs of your website.
-		 *
-		 * Change the version as appropriate.
-		 *
-		 * @since  1.0.0
-		 * @access private
-		 * @return void
-		 */
-		private function constants() {
-
-			/**
-			 * Plugin version
-			 *
-			 * Keeping the version at 1.0.0 as this is a starter plugin but
-			 * you may want to start counting as you develop for your use case.
-			 *
-			 * @since  1.0.0
-			 * @return string Returns the latest plugin version.
-			 */
-			if ( ! defined( 'MISP_VERSION' ) ) {
-				define( 'MISP_VERSION', '1.0.0' );
-			}
-
-			/**
-			 * Text domain
-			 *
-			 * @since  1.0.0
-			 * @return string Returns the text domain of the plugin.
-			 *
-			 * @todo   Replace all strings with constant.
-			 */
-			if ( ! defined( 'MISP_DOMAIN' ) ) {
-				define( 'MISP_DOMAIN', 'manage-image-sizes' );
-			}
-
-			/**
-			 * Plugin folder path
-			 *
-			 * @since  1.0.0
-			 * @return string Returns the filesystem directory path (with trailing slash)
-			 *                for the plugin __FILE__ passed in.
-			 */
-			if ( ! defined( 'MISP_PATH' ) ) {
-				define( 'MISP_PATH', plugin_dir_path( __FILE__ ) );
-				// define( 'MISP_PATH', dirname( __FILE__ ) . '/' );
-			}
-
-			/**
-			 * Plugin folder URL
-			 *
-			 * @since  1.0.0
-			 * @return string Returns the URL directory path (with trailing slash)
-			 *                for the plugin __FILE__ passed in.
-			 */
-			if ( ! defined( 'MISP_URL' ) ) {
-				// define( 'MISP_URL', plugin_dir_url( __FILE__ ) );
-				define( 'MISP_URL', plugins_url( basename( dirname( __FILE__ ) ) ) . '/' );
-			}
-
-		}
-
-		/**
-		 * Require the core plugin class files.
-		 *
-		 * @since  1.0.0
-		 * @access private
-		 * @return void Gets the file which contains the core plugin class.
-		 */
-		private function dependencies() {
-
-			require_once( MISP_PATH . 'php/log.php' );
-
-			/**
-			 * Get the PTE Extras files
-			 *
-			 * @todo Rename directory.
-			 */
-			require_once MISP_PATH . 'extras/extras.php';
-
-			// The hub of all other dependency files.
-			require_once MISP_PATH . 'includes/class-init.php';
-
-			// Include the activation class.
-			require_once MISP_PATH . 'includes/class-activate.php';
-
-			// Include the deactivation class.
-			require_once MISP_PATH . 'includes/class-deactivate.php';
-
-		}
-
-	}
-	// End core plugin class.
-
-	/**
-	 * Put an instance of the plugin class into a function.
-	 *
-	 * @since  1.0.0
-	 * @access public
-	 * @return object Returns the instance of the `Manage_Image_Sizes` class.
-	 */
-	function misp_core() {
-
-		return Manage_Image_Sizes::instance();
-
-	}
-
-	// Begin plugin functionality.
-	misp_core();
-
-// End the check for the plugin class.
-endif;
+if ( ! defined( 'MISP_VERSION' ) ) {
+	define( 'MISP_VERSION', '1.0.0' );
+}
 
 /**
- * Register the activaction & deactivation hooks.
+ * Text domain
+ *
+ * @since  1.0.0
+ * @return string Returns the text domain of the plugin.
+ *
+ * @todo   Replace all strings with constant.
+ */
+if ( ! defined( 'MISP_DOMAIN' ) ) {
+	define( 'MISP_DOMAIN', 'manage-image-sizes' );
+}
+
+/**
+ * Plugin folder path
+ *
+ * @since  1.0.0
+ * @return string Returns the filesystem directory path (with trailing slash)
+ *                for the plugin __FILE__ passed in.
+ */
+if ( ! defined( 'MISP_PATH' ) ) {
+	define( 'MISP_PATH', plugin_dir_path( __FILE__ ) );
+}
+
+/**
+ * Plugin folder URL
+ *
+ * @since  1.0.0
+ * @return string Returns the URL directory path (with trailing slash)
+ *                for the plugin __FILE__ passed in.
+ */
+if ( ! defined( 'MISP_URL' ) ) {
+	define( 'MISP_URL', plugins_url( basename( dirname( __FILE__ ) ) ) . '/' );
+}
+
+require_once MISP_PATH . 'php/log.php';
+
+/**
+ * Get the PTE Extras files
+ *
+ * @todo Rename directory.
+ */
+require_once MISP_PATH . 'extras/extras.php';
+
+// The hub of all other dependency files.
+require_once MISP_PATH . 'includes/class-init.php';
+
+// Include the activation class.
+require_once MISP_PATH . 'includes/class-activate.php';
+
+// Include the deactivation class.
+require_once MISP_PATH . 'includes/class-deactivate.php';
+
+/**
+ * Register the activation & deactivation hooks.
  *
  * @since  1.0.0
  * @access public
@@ -233,10 +127,7 @@ register_deactivation_hook( __FILE__, '\misp_deactivate_plugin' );
  * @return void
  */
 function misp_activate_plugin() {
-
-	// Run the activation class.
 	misp_activate();
-
 }
 
 /**
@@ -247,15 +138,7 @@ function misp_activate_plugin() {
  * @return void
  */
 function misp_deactivate_plugin() {
-
-	// Run the deactivation class.
 	misp_deactivate();
-
-}
-
-// Bail out now if the core class was not run.
-if ( ! function_exists( 'misp_core' ) ) {
-	return;
 }
 
 /*
@@ -337,7 +220,7 @@ function misp_get_options() {
 
 function misp_update_user_options() {
 
-	require_once( MISP_PATH . 'php/options.php' );
+	require_once MISP_PATH . 'php/options.php';
 
 	$options = misp_get_user_options();
 
@@ -505,7 +388,7 @@ function misp_add_thickbox() {
 add_action( 'wp_ajax_misp_ajax', 'misp_ajax' );
 function misp_ajax() {
 	// Move all adjuntant functions to a separate file and include that here
-	require_once( MISP_PATH . 'php/functions.php' );
+	require_once MISP_PATH . 'php/functions.php';
 	PteLogger::debug( 'PARAMETERS: ' . print_r( $_REQUEST, true ) );
 
 	//header('Content-type: application/json');
@@ -620,7 +503,7 @@ add_action( 'load-options.php', 'misp_options' );
 
 function misp_options() {
 
-	require_once( MISP_PATH . 'php/options.php' );
+	require_once MISP_PATH . 'php/options.php';
 	misp_options_init();
 
 }
@@ -666,7 +549,7 @@ function misp_admin_menu() {
 
 function misp_launch_options_page() {
 
-	require_once( MISP_PATH . 'php/options.php' );
+	require_once MISP_PATH . 'php/options.php';
 	misp_options_page();
 
 }
@@ -710,7 +593,7 @@ function misp_edit_setup() {
 	$post  = get_post( $post_id );
 	$title = __( 'Manage Image Sizes', MISP_DOMAIN );
 
-	include_once( MISP_PATH . 'php/functions.php' );
+	include_once MISP_PATH . 'php/functions.php';
 
 	// Add the scripts and styles.
 	wp_enqueue_script( 'jquery' );
@@ -732,7 +615,7 @@ function misp_edit_setup() {
 add_action( 'wp_ajax_misp_imgedit_preview','misp_wp_ajax_imgedit_preview_wrapper' );
 
 function misp_wp_ajax_imgedit_preview_wrapper() {
-	require_once( MISP_PATH . 'php/overwrite_imgedit_preview.php' );
+	require_once MISP_PATH . 'php/overwrite_imgedit_preview.php';
 	misp_wp_ajax_imgedit_preview();
 }
 
