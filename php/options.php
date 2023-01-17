@@ -13,7 +13,7 @@ function misp_options_init() {
 
 	register_setting(
 		'misp_options',
-		MISP\misp_get_option_name(),
+		MISP\get_option_name(),
 		'misp_options_validate'
 	);
 
@@ -199,7 +199,7 @@ function misp_options_validate( $input ){
 	if ( $input['misp_imgedit_max_size'] != "" ){
 		$tmp_size = (int) preg_replace( "/[\D]/", "", $input['misp_imgedit_max_size'] );
 		if ( $tmp_size < 0 || $tmp_size > 10000 ) {
-			add_settings_error( misp_get_option_name()
+			add_settings_error( MISP\get_option_name()
 				, 'misp_options_error'
 				, __( "Crop Size must be between 0 and 10000.", MISP_DOMAIN ) );
 		}
@@ -214,7 +214,7 @@ function misp_options_validate( $input ){
 
 function misp_debug_display(){
 	$options = MISP\misp_get_user_options();
-	$option_label = MISP\misp_get_option_name();
+	$option_label = MISP\get_option_name();
 ?>
 	<span><input type="checkbox" name="<?php
 	print $option_label;
@@ -247,7 +247,7 @@ function misp_debug_display(){
 
 function misp_crop_save_display(){
 	$options = MISP\misp_get_user_options();
-	$option_label = MISP\misp_get_option_name();
+	$option_label = MISP\get_option_name();
 ?>
 	<span><input type="checkbox" name="<?php
 	print $option_label;
@@ -260,7 +260,7 @@ function misp_crop_save_display(){
 
 function misp_imgedit_size_display(){
 	$options = MISP\misp_get_user_options();
-	$option_label = MISP\misp_get_option_name();
+	$option_label = MISP\get_option_name();
 ?>
 	<span><input class="small-text" type="text"
 			name="<?php print $option_label; ?>[misp_imgedit_max_size]"
@@ -284,7 +284,7 @@ function misp_imgedit_size_display(){
 function misp_reset_display(){
 ?>
 	<input class="button-secondary" name="<?php
-	echo( MISP\misp_get_option_name() );
+	echo( MISP\get_option_name() );
 	?>[reset]" type="submit" value="<?php esc_attr_e( 'Reset User Options', MISP_DOMAIN ); ?>" />
 <?php
 }
