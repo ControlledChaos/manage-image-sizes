@@ -39,6 +39,8 @@
  * along with Manage Image Sizes. If not, see {URI to Plugin License}.
  */
 
+namespace MISP;
+
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
 	die;
@@ -100,46 +102,130 @@ require_once MISP_PATH . 'php/log.php';
  */
 require_once MISP_PATH . 'extras/extras.php';
 
-// The hub of all other dependency files.
-require_once MISP_PATH . 'includes/class-init.php';
-
-// Include the activation class.
-require_once MISP_PATH . 'includes/class-activate.php';
-
-// Include the deactivation class.
-require_once MISP_PATH . 'includes/class-deactivate.php';
-
 /**
- * Register the activation & deactivation hooks.
+ * Options in Media Settings
  *
  * @since  1.0.0
- * @access public
  * @return void
  */
-register_activation_hook( __FILE__, '\misp_activate_plugin' );
-register_deactivation_hook( __FILE__, '\misp_deactivate_plugin' );
+function misp_options_media() {
+
+	add_settings_field(
+		'misp_hard_crop_medium',
+		__( 'Medium crop', MISP_DOMAIN ),
+		 __NAMESPACE__ . '\misp_medium_crop',
+		'media',
+		'default',
+		[ __( 'Crop Medium size to exact dimensions', MISP_DOMAIN ) ]
+	);
+
+	add_settings_field(
+		'misp_hard_crop_large',
+		__( 'Large crop', MISP_DOMAIN ),
+		 __NAMESPACE__ . '\misp_large_crop',
+		'media',
+		'default',
+		[ __( 'Crop Large size to exact dimensions', MISP_DOMAIN ) ]
+	);
+
+	register_setting(
+		'media',
+		'misp_hard_crop_medium'
+	);
+
+	register_setting(
+		'media',
+		'misp_hard_crop_large'
+	);
+}
+add_action( 'admin_init', __NAMESPACE__ . '\misp_options_media', 9 );
 
 /**
- * The code that runs during plugin activation.
+ * Medium crop field
  *
  * @since  1.0.0
- * @access public
- * @return void
+ * @return string
  */
-function misp_activate_plugin() {
-	misp_activate();
+function misp_medium_crop( $args ) {
+
+	$html = '<p><input type="checkbox" id="misp_hard_crop_medium" name="misp_hard_crop_medium" value="1" ' . checked( 1, get_option( 'misp_hard_crop_medium' ), false ) . '/>';
+
+	$html .= '<label for="misp_hard_crop_medium"> '  . $args[0] . '</label></p>';
+
+	echo $html;
 }
 
 /**
- * The code that runs during plugin deactivation.
+ * Large crop field
  *
  * @since  1.0.0
- * @access public
+ * @return string
+ */
+function misp_large_crop( $args ) {
+
+	$html = '<p><input type="checkbox" id="misp_hard_crop_large" name="misp_hard_crop_large" value="1" ' . checked( 1, get_option( 'misp_hard_crop_large' ), false ) . '/>';
+
+	$html .= '<label for="misp_hard_crop_large"> '  . $args[0] . '</label></p>';
+
+	echo $html;
+}
+
+/**
+ * Update crop options
+ *
+ * @since  1.0.0
  * @return void
  */
-function misp_deactivate_plugin() {
-	misp_deactivate();
+function default_sizes_crop() {
+
+	if ( get_option( 'misp_hard_crop_medium' ) ) {
+		update_option( 'medium_crop', 1 );
+	} else {
+		update_option( 'medium_crop', 0 );
+	}
+
+	if ( get_option( 'misp_hard_crop_large' ) ) {
+		update_option( 'large_crop', 1 );
+	} else {
+		update_option( 'large_crop', 0 );
+	}
 }
+add_action( 'after_setup_theme',  __NAMESPACE__ . '\default_sizes_crop' );
+
+/**
+ * Add image sizes to media UI
+ *
+ * Adds custom image sizes to "Insert Media" user interface
+ * and adds custom class to the `<img>` tag.
+ *
+ * @since  1.0.0
+ * @param  array $sizes Gets the array of image size names.
+ * @global array $_wp_additional_image_sizes Gets the array of custom image size names.
+ * @return array $sizes Returns an array of image size names.
+ */
+function misp_insert_custom_image_sizes( $sizes ) {
+
+	// Access global variables.
+	global $_wp_additional_image_sizes;
+
+	// Return default sizes if no custom sizes.
+	if ( empty( $_wp_additional_image_sizes ) ) {
+		return $sizes;
+	}
+
+	// Capitalize custom image size names and remove hyphens.
+	foreach ( $_wp_additional_image_sizes as $id => $data ) {
+
+		if ( ! isset( $sizes[$id] ) ) {
+			$sizes[$id] = ucwords( str_replace( '-', ' ', $id ) );
+		}
+	}
+
+	// Return the modified array of sizes.
+	return $sizes;
+
+}
+add_filter( 'image_size_names_choose',  __NAMESPACE__ . '\misp_insert_custom_image_sizes', 10, 1 );
 
 /*
  * Option Functionality
@@ -496,10 +582,10 @@ function misp_media_row_actions( $actions, $post, $detached ) {
 
 
 /* Add Settings Page */
-add_action( 'load-settings_page_misp', 'misp_options' );
+add_action( 'load-settings_page_misp',  __NAMESPACE__ . '\misp_options' );
 
 /* Add Settings Page -> Submit/Update options */
-add_action( 'load-options.php', 'misp_options' );
+add_action( 'load-options.php',  __NAMESPACE__ . '\misp_options' );
 
 function misp_options() {
 
@@ -508,44 +594,25 @@ function misp_options() {
 
 }
 
-/* Add SubMenus/Pages */
-add_action( 'admin_menu', 'misp_admin_menu' );
-
 /**
- * These pages are linked into the hook system of wordpress, this means
- * that almost any wp_admin page will work as long as you append "?page=misp"
- * or "?page=misp-edit".  Try the function `'admin_url("index.php") . '?page=misp';`
+ * Plugin options page
  *
- * The function referred to here will output the HTML for the page that you want
- * to display. However if you want to hook into enqueue_scripts or styles you
- * should use the page-suffix that is returned from the function. (e.g.
- * `add_action("load-".$hook, hook_func);`)
+ * Displays as a submenu page under Settings.
  *
- * There is also another hook with the same name as the hook that's returned.
- * I don't remember in which order it is launched, but I believe the pertinent
- * code is in admin-header.php.
+ * @since  1.0.0
+ * @return void
  */
-function misp_admin_menu() {
+function admin_menu() {
 
 	add_options_page(
 		__( 'Manage Image Sizes', MISP_DOMAIN ),
 		__( 'Image Sizes', MISP_DOMAIN ),
 		'edit_posts',
 		'misp',
-		'misp_launch_options_page'
+		__NAMESPACE__ . '\misp_launch_options_page'
 	);
-
-	// The submenu page function does not put a menu item in the wordpress sidebar.
-	add_submenu_page(
-		null,
-		__( 'Manage Image Sizes', MISP_DOMAIN ),
-		__( 'Image Sizes', MISP_DOMAIN ),
-		'edit_posts',
-		'misp-edit',
-		'misp_edit_page'
-	);
-
 }
+add_action( 'admin_menu',  __NAMESPACE__ . '\admin_menu' );
 
 function misp_launch_options_page() {
 
@@ -575,7 +642,7 @@ function misp_edit_page() {
  * (dashboard_page_misp-edit)  : wp-admin/?page=misp-edit
  * (posts_page_misp-edit)      : wp-admin/edit.php?page=misp-edit
  */
-add_action( 'load-media_page_misp-edit', 'misp_edit_setup' );
+add_action( 'load-media_page_misp-edit',  __NAMESPACE__ . '\misp_edit_setup' );
 
 function misp_edit_setup() {
 
@@ -612,7 +679,7 @@ function misp_edit_setup() {
  * By overwriting the wordpress code (same functions), we can change the default size
  * to our own option.
  */
-add_action( 'wp_ajax_misp_imgedit_preview','misp_wp_ajax_imgedit_preview_wrapper' );
+add_action( 'wp_ajax_misp_imgedit_preview',  __NAMESPACE__ . '\misp_wp_ajax_imgedit_preview_wrapper' );
 
 function misp_wp_ajax_imgedit_preview_wrapper() {
 	require_once MISP_PATH . 'php/overwrite_imgedit_preview.php';
