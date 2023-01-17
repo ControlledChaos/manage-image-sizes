@@ -108,12 +108,12 @@ require_once MISP_PATH . 'extras/extras.php';
  * @since  1.0.0
  * @return void
  */
-function options_media() {
+function misp_options_media() {
 
 	add_settings_field(
 		'misp_hard_crop_medium',
 		__( 'Medium crop', MISP_DOMAIN ),
-		 'medium_crop',
+		 'misp_medium_crop',
 		'media',
 		'default',
 		[ __( 'Crop Medium size to exact dimensions', MISP_DOMAIN ) ]
@@ -122,7 +122,7 @@ function options_media() {
 	add_settings_field(
 		'misp_hard_crop_large',
 		__( 'Large crop', MISP_DOMAIN ),
-		 'large_crop',
+		 'misp_large_crop',
 		'media',
 		'default',
 		[ __( 'Crop Large size to exact dimensions', MISP_DOMAIN ) ]
@@ -145,7 +145,7 @@ function options_media() {
  * @since  1.0.0
  * @return string
  */
-function medium_crop( $args ) {
+function misp_medium_crop( $args ) {
 
 	$html = '<p><input type="checkbox" id="misp_hard_crop_medium" name="misp_hard_crop_medium" value="1" ' . checked( 1, get_option( 'misp_hard_crop_medium' ), false ) . '/>';
 
@@ -160,7 +160,7 @@ function medium_crop( $args ) {
  * @since  1.0.0
  * @return string
  */
-function large_crop( $args ) {
+function misp_large_crop( $args ) {
 
 	$html = '<p><input type="checkbox" id="misp_hard_crop_large" name="misp_hard_crop_large" value="1" ' . checked( 1, get_option( 'misp_hard_crop_large' ), false ) . '/>';
 
@@ -175,7 +175,7 @@ function large_crop( $args ) {
  * @since  1.0.0
  * @return void
  */
-function default_sizes_crop() {
+function misp_default_sizes_crop() {
 
 	if ( get_option( 'misp_hard_crop_medium' ) ) {
 		update_option( 'medium_crop', 1 );
@@ -201,7 +201,7 @@ function default_sizes_crop() {
  * @global array $_wp_additional_image_sizes Gets the array of custom image size names.
  * @return array $sizes Returns an array of image size names.
  */
-function insert_custom_image_sizes( $sizes ) {
+function misp_insert_custom_image_sizes( $sizes ) {
 
 	// Access global variables.
 	global $_wp_additional_image_sizes;
@@ -224,7 +224,7 @@ function insert_custom_image_sizes( $sizes ) {
 /*
  * Option Functionality
  */
-function get_option_name() {
+function misp_get_option_name() {
 
 	global $current_user;
 
@@ -236,7 +236,7 @@ function get_option_name() {
 
 function misp_get_user_options() {
 
-	$misp_options = get_option( get_option_name() );
+	$misp_options = get_option( misp_get_option_name() );
 
 	if ( ! is_array( $misp_options ) ) {
 		$misp_options = [];
@@ -322,7 +322,7 @@ function misp_update_user_options() {
 		}
 	}
 
-	update_option( get_option_name(), $options );
+	update_option( misp_get_option_name(), $options );
 }
 
 /**
@@ -706,9 +706,9 @@ function settings_link( $links ) {
  */
 function init() {
 
-	add_action( 'admin_init', 'options_media', 9 );
-	add_action( 'after_setup_theme',  'default_sizes_crop' );
-	add_filter( 'image_size_names_choose',  'insert_custom_image_sizes', 10, 1 );
+	add_action( 'admin_init', 'misp_options_media', 9 );
+	add_action( 'after_setup_theme',  'misp_default_sizes_crop' );
+	add_filter( 'image_size_names_choose',  'misp_insert_custom_image_sizes', 10, 1 );
 	add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), 'settings_link' );
 
 	load_plugin_textdomain( MISP_DOMAIN, false, basename( MISP_PATH ) . DIRECTORY_SEPARATOR . 'i18n' );
