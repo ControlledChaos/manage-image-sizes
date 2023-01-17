@@ -12,11 +12,13 @@ function misp_options_init(){
 		, 'misp_noop'
 		, 'misp' );
 
+	/*
 	add_settings_field( 'misp_debug'
 		, __('Debug', MISP_DOMAIN)
 		, 'misp_debug_display'
 		, 'misp'
 		, 'misp_main' );
+	*/
 
 	add_settings_field( 'misp_crop_save'
 		, __('Crop and Save', MISP_DOMAIN)
@@ -81,9 +83,9 @@ function misp_options_page(){
 			<?php settings_fields('misp_options'); ?>
 			<?php do_settings_sections('misp'); ?>
 			<p class="submit">
-				<input class="button-primary" 
-					name="Submit" 
-					type="submit" 
+				<input class="button-primary"
+					name="Submit"
+					type="submit"
 					value="<?php esc_attr_e('Save Changes', MISP_DOMAIN); ?>" />
 			</p>
 		</form>
@@ -107,7 +109,7 @@ function misp_site_options_validate( $input ){
 
 	foreach ( $sizes as $size ){
 		// Hidden
-		if ( isset($input['misp_hidden_sizes']) && is_array( $input['misp_hidden_sizes'] ) 
+		if ( isset($input['misp_hidden_sizes']) && is_array( $input['misp_hidden_sizes'] )
 			&& in_array( $size, $input['misp_hidden_sizes'] ) ){
 				$misp_hidden_sizes[] = $size;
 			}
@@ -119,7 +121,7 @@ function misp_site_options_validate( $input ){
 	if ( isset($input['misp_jpeg_compression']) && $input['misp_jpeg_compression'] != "" ){
 		$tmp_jpeg_compression = (int) preg_replace( "/[\D]/", "", $input['misp_jpeg_compression'] );
 		if ( ! is_int( $tmp_jpeg_compression )
-			|| $tmp_jpeg_compression < 0 
+			|| $tmp_jpeg_compression < 0
 			|| $tmp_jpeg_compression > 100 )
 		{
 			add_settings_error('misp_options_site'
@@ -179,12 +181,12 @@ function misp_debug_display(){
 ?>
 	<span><input type="checkbox" name="<?php
 	print $option_label;
-	?>[misp_debug]" <?php 
-	if ( $options['misp_debug'] ): print "checked"; endif; 
+	?>[misp_debug]" <?php
+	if ( $options['misp_debug'] ): print "checked"; endif;
 	?> id="misp_debug"/>&nbsp;<label for="misp_debug"><?php _e( 'Enable debugging', MISP_DOMAIN ); ?></label>
 <?php if ( WP_DEBUG ) {
 	print( "<br/><em>" );
-	_e( "WP_DEBUG is currently set to true and will override this setting. (debug is enabled)" ); 
+	_e( "WP_DEBUG is currently set to true and will override this setting. (debug is enabled)" );
 	print( "</em>" );
 }?>
 	</span>
@@ -212,8 +214,8 @@ function misp_crop_save_display(){
 ?>
 	<span><input type="checkbox" name="<?php
 	print $option_label;
-	?>[misp_crop_save]" <?php 
-	if ( $options['misp_crop_save'] ): print "checked"; endif; 
+	?>[misp_crop_save]" <?php
+	if ( $options['misp_crop_save'] ): print "checked"; endif;
 	?> id="misp_crop_save"/>&nbsp;<label for="misp_crop_save"><?php _e( 'I know what I\'m doing, bypass the image verification.', MISP_DOMAIN ); ?></label>
 		</span>
 <?php
@@ -223,18 +225,18 @@ function misp_imgedit_size_display(){
 	$options = misp_get_user_options();
 	$option_label = misp_get_option_name();
 ?>
-	<span><input class="small-text" type="text" 
-			name="<?php print $option_label; ?>[misp_imgedit_max_size]" 
-			value="<?php if ( isset( $options['misp_imgedit_max_size'] ) ){ print $options['misp_imgedit_max_size']; }?>" 
-			id="misp_imgedit_max_size">&nbsp; 
+	<span><input class="small-text" type="text"
+			name="<?php print $option_label; ?>[misp_imgedit_max_size]"
+			value="<?php if ( isset( $options['misp_imgedit_max_size'] ) ){ print $options['misp_imgedit_max_size']; }?>"
+			id="misp_imgedit_max_size">&nbsp;
 	<?php _e("Set the max size for the crop image.", MISP_DOMAIN); ?>
 	<br/><em><?php _e("No entry defaults to 600", MISP_DOMAIN); ?></em>
 	</span>
 	<div class="sub-option">
-	<span><input type="checkbox" 
-			name="<?php print $option_label; ?>[misp_imgedit_disk]" 
+	<span><input type="checkbox"
+			name="<?php print $option_label; ?>[misp_imgedit_disk]"
 			<?php if ($options['misp_imgedit_disk'] ): print "checked"; endif; ?>
-			id="misp_imgedit_disk">&nbsp;<label for="misp_imgedit_disk"> 
+			id="misp_imgedit_disk">&nbsp;<label for="misp_imgedit_disk">
 		<?php _e("Check this to save the generated working image to disk instead of creating on the fly (experimental)", MISP_DOMAIN); ?>
 	</label>
 	</span>
@@ -244,8 +246,8 @@ function misp_imgedit_size_display(){
 
 function misp_reset_display(){
 ?>
-	<input class="button-secondary" name="<?php 
-	echo( misp_get_option_name() ); 
+	<input class="button-secondary" name="<?php
+	echo( misp_get_option_name() );
 	?>[reset]" type="submit" value="<?php esc_attr_e('Reset User Options', MISP_DOMAIN); ?>" />
 <?php
 }
@@ -299,10 +301,10 @@ function misp_sizes_display(){
 function misp_jpeg_compression_display(){
 	$options = misp_get_site_options();
 ?>
-	<span><input class="small-text" type="text" 
-			 name="misp-site-options[misp_jpeg_compression]" 
-			 value="<?php if ( isset( $options['misp_jpeg_compression'] ) ){ print $options['misp_jpeg_compression']; }?>" 
-			 id="misp_jpeg_compression">&nbsp; 
+	<span><input class="small-text" type="text"
+			 name="misp-site-options[misp_jpeg_compression]"
+			 value="<?php if ( isset( $options['misp_jpeg_compression'] ) ){ print $options['misp_jpeg_compression']; }?>"
+			 id="misp_jpeg_compression">&nbsp;
 	<?php _e("Set the compression level for resizing jpeg images (0 to 100).", MISP_DOMAIN); ?>
 	<br/><em><?php _e("No entry defaults to using the 'jpeg_quality' filter or 90", MISP_DOMAIN); ?></em>
 	</span>
@@ -312,11 +314,11 @@ function misp_jpeg_compression_display(){
 function misp_cache_buster_display(){
 	$options = misp_get_site_options();
 ?>
-	<span><input type="checkbox" name="misp-site-options[misp_cache_buster]" <?php 
-	if ( $options['cache_buster'] ): print "checked"; endif; 
+	<span><input type="checkbox" name="misp-site-options[misp_cache_buster]" <?php
+	if ( $options['cache_buster'] ): print "checked"; endif;
 ?> id="misp_cache_buster"/>&nbsp;
 <label for="misp_cache_buster"><?php
-	_e( 'Append timestamp to filename. Useful for solving caching problems.', MISP_DOMAIN ); 
+	_e( 'Append timestamp to filename. Useful for solving caching problems.', MISP_DOMAIN );
 ?></label>
 	</span>
 <?php
@@ -326,6 +328,6 @@ function misp_cache_buster_display(){
 // some versions of PHP
 function misp_noop(){}
 function misp_edit_posts_cap( $capability ){ return 'edit_posts'; }
-function misp_site_options_html(){ 
-	_e( "These site-wide settings can only be changed by an administrator", MISP_DOMAIN ); 
+function misp_site_options_html(){
+	_e( "These site-wide settings can only be changed by an administrator", MISP_DOMAIN );
 }
