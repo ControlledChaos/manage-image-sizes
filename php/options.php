@@ -7,20 +7,29 @@
  * @since      1.0.0
  */
 
-function misp_options_init() {
+namespace MISP\Options;
 
-	add_filter( 'option_page_capability_misp_options', 'misp_edit_posts_cap' );
+use MISP\Classes\Log as Log_Class;
+
+use function MISP\get_plugin_options;
+use function MISP\get_option_name;
+use function MISP\get_user_options;
+use function MISP\get_site_options;
+
+function options_init() {
+
+	add_filter( 'option_page_capability_misp_options', __NAMESPACE__ . '\edit_posts_cap' );
 
 	register_setting(
 		'misp_options',
-		misp_get_option_name(),
-		'misp_options_validate'
+		get_option_name(),
+		__NAMESPACE__ . '\options_validate'
 	);
 
 	add_settings_section(
 		'misp_main',
 		 __( 'User Options', MISP_DOMAIN ),
-		 'misp_noop',
+		 __NAMESPACE__ . '\noop',
 		 'misp'
 	);
 
@@ -28,7 +37,7 @@ function misp_options_init() {
 	add_settings_field(
 		'misp_debug',
 		__( 'Debug', MISP_DOMAIN ),
-		'misp_debug_display',
+		__NAMESPACE__ . '\debug_display',
 		'misp',
 		'misp_main'
 	);
@@ -37,7 +46,7 @@ function misp_options_init() {
 	add_settings_field(
 		'misp_crop_save',
 		__( 'Crop and Save', MISP_DOMAIN ),
-		'misp_crop_save_display',
+		__NAMESPACE__ . '\crop_save_display',
 		'misp',
 		'misp_main'
 	);
@@ -45,7 +54,7 @@ function misp_options_init() {
 	add_settings_field(
 		'misp_imgedit_max_size',
 		__( 'Crop Picture Size', MISP_DOMAIN ),
-		'misp_imgedit_size_display',
+		__NAMESPACE__ . '\imgedit_size_display',
 		'misp',
 		'misp_main'
 	);
@@ -53,7 +62,7 @@ function misp_options_init() {
 	add_settings_field(
 		'misp_reset',
 		__( 'Reset to defaults', MISP_DOMAIN ),
-		'misp_reset_display',
+		__NAMESPACE__ . '\reset_display',
 		'misp',
 		'misp_main'
 	);
@@ -64,20 +73,20 @@ function misp_options_init() {
 		register_setting(
 			'misp_options',
 			'misp-site-options',
-			'misp_site_options_validate'
+			__NAMESPACE__ . '\site_options_validate'
 		);
 
 		add_settings_section(
 			'misp_site',
 			__( 'Site Options', MISP_DOMAIN ),
-			'misp_site_options_html',
+			__NAMESPACE__ . '\site_options_html',
 			'misp'
 		);
 
 		add_settings_field(
 			'misp_sizes',
 			__( 'Thumbnails', MISP_DOMAIN ),
-			'misp_sizes_display',
+			__NAMESPACE__ . '\sizes_display',
 			'misp',
 			'misp_site'
 		);
@@ -85,7 +94,7 @@ function misp_options_init() {
 		add_settings_field(
 			'misp_jpeg_compression',
 			__( 'JPEG Compression', MISP_DOMAIN ),
-			'misp_jpeg_compression_display',
+			__NAMESPACE__ . '\jpeg_compression_display',
 			'misp',
 			'misp_site'
 		);
@@ -93,7 +102,7 @@ function misp_options_init() {
 		add_settings_field(
 			'misp_cache_buster',
 			__( 'Cache Buster', MISP_DOMAIN ),
-			'misp_cache_buster_display',
+			__NAMESPACE__ . '\cache_buster_display',
 			'misp',
 			'misp_site'
 		);
@@ -102,7 +111,7 @@ function misp_options_init() {
 
 }
 
-function misp_options_page() {
+function options_page() {
 
 ?>
 	<style type="text/css" media="screen">
@@ -132,13 +141,13 @@ function misp_options_page() {
 
 /*********** Internal to options **************************************/
 
-function misp_site_options_validate( $input ){
+function site_options_validate( $input ){
 	//$sizes = misp_get_alternate_sizes(false);
 	if ( !current_user_can( 'manage_options' ) ){
 		add_settings_error( 'misp_options_site'
 			, 'misp_options_error'
 			, __( "Only users with the 'manage_options' capability may make changes to these settings.", MISP_DOMAIN ) );
-		return misp_get_site_options();
+		return get_site_options();
 	}
 	$sizes = get_intermediate_image_sizes();
 
@@ -174,8 +183,8 @@ function misp_site_options_validate( $input ){
 	return $output;
 }
 
-function misp_options_validate( $input ){
-	$options = misp_get_user_options();
+function options_validate( $input ){
+	$options = get_user_options();
 
 	if ( isset( $input['reset'] ) ){
 		return array();
@@ -199,7 +208,7 @@ function misp_options_validate( $input ){
 	if ( $input['misp_imgedit_max_size'] != "" ){
 		$tmp_size = (int) preg_replace( "/[\D]/", "", $input['misp_imgedit_max_size'] );
 		if ( $tmp_size < 0 || $tmp_size > 10000 ) {
-			add_settings_error( misp_get_option_name()
+			add_settings_error( get_option_name()
 				, 'misp_options_error'
 				, __( "Crop Size must be between 0 and 10000.", MISP_DOMAIN ) );
 		}
@@ -212,9 +221,9 @@ function misp_options_validate( $input ){
 	return $options;
 }
 
-function misp_debug_display(){
-	$options = misp_get_user_options();
-	$option_label = misp_get_option_name();
+function debug_display(){
+	$options = get_user_options();
+	$option_label = get_option_name();
 ?>
 	<span><input type="checkbox" name="<?php
 	print $option_label;
@@ -239,34 +248,34 @@ function misp_debug_display(){
 		&nbsp;
 		<label for="misp_debug_out_file"><?php printf(
 			__( 'Write log output to a <a href="%s">file</a>'),
-			PteLogFileHandler::getLogFileUrl()
+			Log_Class\PteLogFileHandler :: getLogFileUrl()
 		); ?></label>
 	</div>
 <?php
 }
 
-function misp_crop_save_display(){
-	$options = misp_get_user_options();
-	$option_label = misp_get_option_name();
+function crop_save_display(){
+	$options = get_user_options();
+	$option_label = get_option_name();
 ?>
 	<span><input type="checkbox" name="<?php
 	print $option_label;
 	?>[misp_crop_save]" <?php
 	if ( $options['misp_crop_save'] ): print "checked"; endif;
-	?> id="misp_crop_save"/>&nbsp;<label for="misp_crop_save"><?php _e( 'I know what I\'m doing, bypass the image verification.', MISP_DOMAIN ); ?></label>
+	?> id="misp_crop_save"/>&nbsp;<label for="misp_crop_save"><?php _e( 'Bypass the image crop verification.', MISP_DOMAIN ); ?></label>
 		</span>
 <?php
 }
 
-function misp_imgedit_size_display(){
-	$options = misp_get_user_options();
-	$option_label = misp_get_option_name();
+function imgedit_size_display(){
+	$options = get_user_options();
+	$option_label = get_option_name();
 ?>
 	<span><input class="small-text" type="text"
 			name="<?php print $option_label; ?>[misp_imgedit_max_size]"
 			value="<?php if ( isset( $options['misp_imgedit_max_size'] ) ){ print $options['misp_imgedit_max_size']; }?>"
 			id="misp_imgedit_max_size">&nbsp;
-	<?php _e("Set the max size for the crop image.", MISP_DOMAIN ); ?>
+	<?php _e("Set the maximum image width for the crop palette.", MISP_DOMAIN ); ?>
 	<br/><em><?php _e("No entry defaults to 600", MISP_DOMAIN ); ?></em>
 	</span>
 	<div class="sub-option">
@@ -281,15 +290,15 @@ function misp_imgedit_size_display(){
 <?php
 }
 
-function misp_reset_display(){
+function reset_display(){
 ?>
 	<input class="button-secondary" name="<?php
-	echo( misp_get_option_name() );
+	echo( get_option_name() );
 	?>[reset]" type="submit" value="<?php esc_attr_e( 'Reset User Options', MISP_DOMAIN ); ?>" />
 <?php
 }
 
-function misp_gcd($a, $b){
+function gcd($a, $b){
 	if ( $a == 0 ) return b;
 	while( $b > 0 ){
 		if ( $a > $b ){
@@ -305,9 +314,9 @@ function misp_gcd($a, $b){
 	return $a;
 }
 
-function misp_sizes_display(){
+function sizes_display(){
 	require_once( 'functions.php' );
-	$options = misp_get_options();
+	$options = get_plugin_options();
 
 	// Table Header
 ?>
@@ -335,21 +344,21 @@ function misp_sizes_display(){
 	print( '</table>' );
 }
 
-function misp_jpeg_compression_display(){
-	$options = misp_get_site_options();
+function jpeg_compression_display(){
+	$options = get_site_options();
 ?>
 	<span><input class="small-text" type="text"
 			 name="misp-site-options[misp_jpeg_compression]"
 			 value="<?php if ( isset( $options['misp_jpeg_compression'] ) ){ print $options['misp_jpeg_compression']; }?>"
-			 id="misp_jpeg_compression">&nbsp;
+			 id="misp_jpeg_compression" placeholder="90">&nbsp;
 	<?php _e("Set the compression level for resizing jpeg images (0 to 100).", MISP_DOMAIN ); ?>
 	<br/><em><?php _e("No entry defaults to using the 'jpeg_quality' filter or 90", MISP_DOMAIN ); ?></em>
 	</span>
 <?php
 }
 
-function misp_cache_buster_display(){
-	$options = misp_get_site_options();
+function cache_buster_display(){
+	$options = get_site_options();
 ?>
 	<span><input type="checkbox" name="misp-site-options[misp_cache_buster]" <?php
 	if ( $options['cache_buster'] ): print "checked"; endif;
@@ -363,8 +372,8 @@ function misp_cache_buster_display(){
 
 // Anonymous Functions that can't be anonymous thanks to
 // some versions of PHP
-function misp_noop(){}
-function misp_edit_posts_cap( $capability ){ return 'edit_posts'; }
-function misp_site_options_html(){
+function noop(){}
+function edit_posts_cap( $capability ){ return 'edit_posts'; }
+function site_options_html(){
 	_e( "These site-wide settings can only be changed by an administrator", MISP_DOMAIN );
 }

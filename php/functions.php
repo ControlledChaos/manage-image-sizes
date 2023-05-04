@@ -3,6 +3,14 @@
  * TODO: add helper functions to get various links to different functions
  */
 
+use MISP\Classes\Log as Log_Class;
+
+use function MISP\get_plugin_options;
+use function MISP\misp_tmp_dir;
+use function MISP\misp_check_id;
+use function MISP\misp_edit_page;
+use function MISP\misp_edit_setup;
+
 require_once(MISP_PATH . 'php/log.php');
 
 function misp_require_json() {
@@ -16,8 +24,8 @@ function misp_require_json() {
  * - Calling this should return all the way up the chain...
  */
 function misp_json_encode($mixed = null){
-	$logger = PteLogger::singleton();
-	$options = misp_get_options();
+	$logger = Log_Class\PteLogger :: singleton();
+	$options = get_plugin_options();
 	$logs['error'] = array();
 	$logs['log'] = array();
 
@@ -30,13 +38,13 @@ function misp_json_encode($mixed = null){
 		}
 	}
 
-	if ( $logger->get_log_count( PteLogMessage::$ERROR ) > 0 
-		|| $logger->get_log_count( PteLogMessage::$WARN ) > 0 )
+	if ( $logger->get_log_count( Log_Class\PteLogMessage :: $ERROR ) > 0 
+		|| $logger->get_log_count( Log_Class\PteLogMessage :: $WARN ) > 0 )
 	{
-		$logs['error'] = $logger->get_logs( PteLogMessage::$ERROR | PteLogMessage::$WARN );
+		$logs['error'] = $logger->get_logs( Log_Class\PteLogMessage :: $ERROR | Log_Class\PteLogMessage :: $WARN );
 	}
-	//if ( $logger->get_log_count( PteLogMessage::$WARN ) > 0 ){
-	//   $logs['warn'] = $logger->get_logs( PteLogMessage::$WARN );
+	//if ( $logger->get_log_count( Log_Class\PteLogMessage :: $WARN ) > 0 ){
+	//   $logs['warn'] = $logger->get_logs( Log_Class\PteLogMessage :: $WARN );
 	//}
 	if ( $options['misp_debug'] ){
 		$logs['log'] = $logger->get_logs();
@@ -68,7 +76,7 @@ function misp_json_encode($mixed = null){
  * misp_json_error - Calling this should return all the way up the chain...
  */
 function misp_json_error( $error ){
-	$logger = PteLogger::singleton();
+	$logger = Log_Class\PteLogger :: singleton();
 	$logger->error( $error );
 	return misp_json_encode();
 }
@@ -81,7 +89,7 @@ function misp_json_error( $error ){
  */
 function misp_filter_sizes( $element ){
 	global $misp_sizes;
-	$options = misp_get_options();
+	$options = get_plugin_options();
 	// Check if the element is in the misp_sizes array
 	if ( ( is_array( $misp_sizes ) && !in_array( $element, $misp_sizes ) )
 		or ( in_array( $element, $options['misp_hidden_sizes'] ) )
@@ -163,7 +171,7 @@ function misp_get_alternate_sizes($filter=true){
  * Optionally can return the JSON value or PHP array
  */
 function misp_get_image_data( $id, $size, $size_data ){
-	$logger = PteLogger::singleton();
+	$logger = Log_Class\PteLogger :: singleton();
 
 	$fullsizepath = get_attached_file( $id );
 	$path_information = image_get_intermediate_size($id, $size);
@@ -228,8 +236,8 @@ function misp_get_all_alternate_size_information( $id ){
 function misp_body( $id ){
 	ob_start();
 
-	$logger = PteLogger::singleton();
-	$options = misp_get_options();
+	$logger = Log_Class\PteLogger :: singleton();
+	$options = get_plugin_options();
 
 	// Get the information needed for image preview 
 	//   (See wp-admin/includes/image-edit.php)
@@ -246,7 +254,7 @@ function misp_body( $id ){
 		$logger->error( __( "Please contact support", MISP_DOMAIN ) );
 	}
 
-	PteLogger::debug( "PTE-VERSION: " . MISP_VERSION .
+	Log_Class\PteLogger :: debug( "PTE-VERSION: " . MISP_VERSION .
 		"\nUSER-AGENT:  " . $_SERVER['HTTP_USER_AGENT'] .
 		"\nWORDPRESS:   " . $GLOBALS['wp_version'] );
 
@@ -288,7 +296,7 @@ function misp_body( $id ){
 
 function misp_generate_working_image($id)
 {
-	$options = misp_get_options();
+	$options = get_plugin_options();
 	if (false == $options['misp_imgedit_disk'])
 		return false;
 
@@ -307,25 +315,25 @@ function misp_generate_working_image($id)
 	if ( file_exists( $file ) )
 		return $url;
 
-	PteLogger::debug("\nGENERATING WORKING IMAGE:\n  [{$file}]\n  [{$url}]");
+	Log_Class\PteLogger :: debug("\nGENERATING WORKING IMAGE:\n  [{$file}]\n  [{$url}]");
 
 	// Resize the image and check the results
 	$results = $editor->resize($size,$size);
 	if ( is_wp_error( $results ) ) {
-		PteLogger::error( $results );
+		Log_Class\PteLogger :: error( $results );
 		return false;
 	}
 
 	// Save the image
 	if ( is_wp_error( $editor->save( $file ) ) ) {
-		PteLogger::error( "Unable to save the generated image falling back to ajax-ed image" );
+		Log_Class\PteLogger :: error( "Unable to save the generated image falling back to ajax-ed image" );
 		return false;
 	}
 	return $url;
 }
 
 function misp_check_int( $int ){
-	$logger = PteLogger::singleton();
+	$logger = Log_Class\PteLogger :: singleton();
 	if (! is_numeric( $int ) ){
 		$logger->warn( "PARAM not numeric: '{$int}'" );
 		return false;
@@ -341,7 +349,7 @@ function misp_check_int( $int ){
  *    but the other dimension is wrong
  */
 function misp_get_width_height( $size_information, $w, $h ){
-	$logger = PteLogger::singleton();
+	$logger = Log_Class\PteLogger :: singleton();
 	if ( $size_information['crop'] == 1 ){
 		$logger->debug("GETwidthheightCROPPED");
 		$dst_w = $size_information['width'];
@@ -394,7 +402,7 @@ function misp_get_width_height( $size_information, $w, $h ){
  * @param $transparent if the cropped image is transparent
  */
 function misp_generate_filename( $file, $w, $h, $transparent=false){
-	$options      = misp_get_options();
+	$options      = get_plugin_options();
 	$info         = pathinfo( $file );
 	$ext          = (false !== $transparent) ? 'png' : $info['extension'];
 	$name         = wp_basename( $file, ".$ext" );
@@ -422,7 +430,7 @@ function misp_generate_filename( $file, $w, $h, $transparent=false){
  * OUTPUT: JSON object 'size: url'
  */
 function misp_resize_images(){
-	$logger = PteLogger::singleton();
+	$logger = Log_Class\PteLogger :: singleton();
 	global $misp_sizes;
 
 	// Require JSON output
@@ -567,7 +575,7 @@ function misp_image_editors( $editor_array ){
  */
 function misp_confirm_images($immediate = false){
 	global $misp_sizes;
-	$logger = PteLogger::singleton();
+	$logger = Log_Class\PteLogger :: singleton();
 
 	// Require JSON output
 	misp_require_json();
@@ -658,7 +666,7 @@ function misp_confirm_images($immediate = false){
 }
 
 function misp_rmdir( $dir ){
-	$logger = PteLogger::singleton();
+	$logger = Log_Class\PteLogger :: singleton();
 	if ( !is_dir( $dir ) || !preg_match( "/misptmp/", $dir ) ){
 		$logger->warn("Tried to delete invalid directory: {$dir}");
 		return;
@@ -691,13 +699,13 @@ function misp_delete_images()
 	$MISP_TMP_DIR = $MISP_TMP_DIR . $id . DIRECTORY_SEPARATOR;
 
 	// Delete tmpdir
-	PteLogger::debug( "Deleting [{$MISP_TMP_DIR}]" );
+	Log_Class\PteLogger :: debug( "Deleting [{$MISP_TMP_DIR}]" );
 	misp_rmdir( $MISP_TMP_DIR );
 	return misp_json_encode( array( "success" => "Yay!" ) );
 }
 
 function misp_get_jpeg_quality($quality){
-	$options = misp_get_options();
+	$options = get_plugin_options();
 	$jpeg_compression = $options['misp_jpeg_compression'];
 	if ( isset( $_GET['misp-jpeg-compression'] ) ) {
 		$tmp_jpeg = intval( $_GET['misp-jpeg-compression'] );
@@ -705,7 +713,7 @@ function misp_get_jpeg_quality($quality){
 			$jpeg_compression = $tmp_jpeg;
 		}
 	}
-	PteLogger::debug( "COMPRESSION: " . $jpeg_compression );
+	Log_Class\PteLogger :: debug( "COMPRESSION: " . $jpeg_compression );
 	return $jpeg_compression;
 }
 

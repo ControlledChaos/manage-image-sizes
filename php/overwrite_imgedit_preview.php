@@ -5,7 +5,8 @@
  * do that I have to overwrite 3 functions
  */
 
-
+ use function MISP\get_plugin_options;
+ use function MISP\misp_check_id;
 
 /**
  * From wp-admin/admin-ajax.php
@@ -55,7 +56,7 @@ function misp_stream_preview_image( $post_id ) {
  * From wp-admin/includes/image-edit.php
  */
 function misp_image_get_preview_ratio($w, $h) {
-	$options = misp_get_options();
+	$options = get_plugin_options();
 	$img_max_size = $options['misp_imgedit_max_size'];
 	$max = max($w, $h);
 	return $max > $img_max_size ? ($img_max_size / $max) : 1;

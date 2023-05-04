@@ -1,4 +1,7 @@
 <?php
+
+use function MISP\get_plugin_options;
+
 global $post, $misp_iframe;
 function u( $path ){
    printf( "%s%s?%s",
@@ -301,7 +304,7 @@ function enqueue_last() {
 	);
 }
 
-$options = misp_get_options();
+$options = get_plugin_options();
 
 if ( $options['misp_debug'] ) {
 	add_action('wp_print_footer_scripts', 'enqueue_last', 1, 0);

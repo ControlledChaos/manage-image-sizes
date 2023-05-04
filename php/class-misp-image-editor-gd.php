@@ -1,5 +1,7 @@
 <?php
 
+use MISP\Classes\Log as Log_Class;
+
 class MISP_Image_Editor_GD extends WP_Image_Editor_GD {
 
 	/**
@@ -46,7 +48,7 @@ class MISP_Image_Editor_GD extends WP_Image_Editor_GD {
 				$color = imagecolorallocate( $img, $c[0], $c[1], $c[2] );
 			}
 			else {
-				PteLogger::debug( "setting transparent/white" );
+				Log_Class\PteLogger::debug( "setting transparent/white" );
 				//$color = imagecolorallocate( $img, 100, 100, 100 );
 				$color = imagecolorallocatealpha( $img, 255, 255, 255, 127 );
 			}
