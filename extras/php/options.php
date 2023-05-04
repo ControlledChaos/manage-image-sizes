@@ -110,9 +110,11 @@ class PTXOptions {
 		</style>
 
 EOT;
-		echo( sprintf( $output
-			, __( "Create more than the default image sizes")
-			, __( "There are pending changes, are you sure that you want to leave?" ) ) );
+		printf(
+			$output,
+			__( 'Create custom image sizes. Click the + icon, complete size fields, then click the Save Changes button.', MISP_DOMAIN ),
+			__( 'There are pending changes, are you sure that you want to leave?', MISP_DOMAIN )
+		);
 	}
 
 	private static function thumbnail_html( $thumbnail = null ) {
@@ -124,12 +126,16 @@ EOT;
 		}
 
 		if ( is_null( $thumbnail ) ) {
-			$thumbnail = array( 'name' => 'new-name'
-				, 'width' => 150
-				, 'height' => 150
-				, 'crop' => true
+			$thumbnail = array(
+				'name'   => 'new-name',
+				'width'  => 150,
+				'height' => 150,
+				'crop'   => true
 			);
 			$value = "";
+			$crop  = __( 'Crop to exact dimensions', MISP_DOMAIN );
+		} else {
+			$crop  = __( 'Crop ', MISP_DOMAIN ) . ucwords( str_replace( '-', ' ', $thumbnail['name'] ) ) . __( ' to exact dimensions', MISP_DOMAIN );
 		}
 		$checked = checked( $thumbnail['crop'], true, false );
 		$html = <<<EOT
@@ -164,7 +170,7 @@ EOT;
 			__( 'Delete', MISP_DOMAIN ),
 			__( 'Width', MISP_DOMAIN ),
 			__( 'Height', MISP_DOMAIN ),
-			__( 'Crop ', MISP_DOMAIN ) . ucwords( str_replace( '-', ' ', $thumbnail['name'] ) ) . __( ' to exact dimensions', MISP_DOMAIN )
+			$crop
 		);
 	}
 
