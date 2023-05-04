@@ -44,9 +44,29 @@ namespace MISP;
 use MISP\Classes\Log as Log_Class,
 	MISP\Options     as Options;
 
-// If this file is called directly, abort.
-if ( ! defined( 'WPINC' ) ) {
+// Restrict direct access.
+if ( ! defined( 'ABSPATH' ) ) {
 	die;
+}
+
+/**
+ * Constant: Plugin base name
+ *
+ * @since 1.0.0
+ * @var   string The base name of this plugin file.
+ */
+define( 'MISP_BASENAME', plugin_basename( __FILE__ ) );
+
+/**
+ * Text domain
+ *
+ * @since  1.0.0
+ * @return string Returns the text domain of the plugin.
+ *
+ * @todo   Replace all strings with constant.
+ */
+if ( ! defined( 'MISP_DOMAIN' ) ) {
+	define( 'MISP_DOMAIN', 'manage-image-sizes' );
 }
 
 /**
@@ -60,18 +80,6 @@ if ( ! defined( 'WPINC' ) ) {
  */
 if ( ! defined( 'MISP_VERSION' ) ) {
 	define( 'MISP_VERSION', '1.0.0' );
-}
-
-/**
- * Text domain
- *
- * @since  1.0.0
- * @return string Returns the text domain of the plugin.
- *
- * @todo   Replace all strings with constant.
- */
-if ( ! defined( 'MISP_DOMAIN' ) ) {
-	define( 'MISP_DOMAIN', 'manage-image-sizes' );
 }
 
 /**
@@ -93,8 +101,31 @@ if ( ! defined( 'MISP_PATH' ) ) {
  *                for the plugin __FILE__ passed in.
  */
 if ( ! defined( 'MISP_URL' ) ) {
-	define( 'MISP_URL', plugins_url( basename( dirname( __FILE__ ) ) ) . '/' );
+	define( 'MISP_URL', plugin_dir_url( __FILE__ ) . '/' );
 }
+
+/**
+ * Load text domain
+ *
+ * @since  1.0.0
+ * @return void
+ */
+function load_plugin_textdomain() {
+
+	// Standard plugin installation.
+	\load_plugin_textdomain(
+		'manage-image-sizes',
+		false,
+		dirname( MISP_BASENAME ) . '/languages'
+	);
+
+	// If this plugin is in the must-use plugins directory.
+	\load_muplugin_textdomain(
+		'manage-image-sizes',
+		dirname( MISP_BASENAME ) . '/languages'
+	);
+}
+add_action( 'plugins_loaded', __NAMESPACE__ . '\load_plugin_textdomain' );
 
 // Get plugins path.
 $get_plugin = ABSPATH . 'wp-admin/includes/plugin.php';
@@ -102,14 +133,43 @@ if ( file_exists( $get_plugin ) ) {
 	include_once( $get_plugin );
 }
 
-require_once MISP_PATH . 'php/log.php';
-
 /**
- * Get the PTE Extras files
+ * Add links to the plugin settings pages on the plugins page.
  *
- * @todo Rename directory.
+ * Change the links to those which fill your needs.
+ *
+ * Uses the universal slug partial for admin pages. Set this
+ * slug in the core plugin file.
+ *
+ * @param  array  $links Default plugin links on the 'Plugins' admin page.
+ * @param  object $file Reference the root plugin file with header.
+ * @since  1.0.0
+ * @return mixed[] Returns HTML strings for the settings pages link.
+ *                 Returns an array of custom links with the default plugin links.
+ * @link   https://codex.wordpress.org/Plugin_API/Filter_Reference/plugin_action_links_(plugin_file_name)
  */
-require_once MISP_PATH . 'extras/extras.php';
+function settings_link( $links ) {
+
+	if ( is_admin() ) {
+
+		$url = admin_url( 'options-general.php?page=misp' );
+
+		// Create new settings link array as a variable.
+		$about_page = [
+			sprintf(
+				'<a href="%1s" class="misp-settings-link">%2s</a>',
+				$url,
+				esc_attr( 'Settings', MISP_DOMAIN )
+			),
+		];
+
+		// Merge the new settings array with the default array.
+		return array_merge( $about_page, $links );
+	}
+}
+add_action( 'plugins_loaded', function() {
+	add_filter( 'plugin_action_links_' . MISP_BASENAME, __NAMESPACE__ . '\settings_link' );
+} );
 
 /**
  * Options in Media Settings
@@ -744,40 +804,7 @@ function misp_wp_ajax_imgedit_preview_wrapper() {
 }
 add_action( 'wp_ajax_misp_imgedit_preview',  __NAMESPACE__ . '\misp_wp_ajax_imgedit_preview_wrapper' );
 
-/**
- * Add links to the plugin settings pages on the plugins page.
- *
- * Change the links to those which fill your needs.
- *
- * Uses the universal slug partial for admin pages. Set this
- * slug in the core plugin file.
- *
- * @param  array  $links Default plugin links on the 'Plugins' admin page.
- * @param  object $file Reference the root plugin file with header.
- * @since  1.0.0
- * @return mixed[] Returns HTML strings for the settings pages link.
- *                 Returns an array of custom links with the default plugin links.
- * @link   https://codex.wordpress.org/Plugin_API/Filter_Reference/plugin_action_links_(plugin_file_name)
- */
-function settings_link( $links ) {
-
-	if ( is_admin() ) {
-
-		$url = admin_url( 'options-general.php?page=misp' );
-
-		// Create new settings link array as a variable.
-		$about_page = [
-			sprintf(
-				'<a href="%1s" class="misp-settings-link">%2s</a>',
-				$url,
-				esc_attr( 'Settings', MISP_DOMAIN )
-			),
-		];
-
-		// Merge the new settings array with the default array.
-		return array_merge( $about_page, $links );
-	}
-}
+require_once MISP_PATH . 'init.php';
 
 /**
  * Initialize plugin
@@ -790,9 +817,6 @@ function init() {
 	add_action( 'admin_init', __NAMESPACE__ . '\options_media', 9 );
 	add_action( 'after_setup_theme',  __NAMESPACE__ . '\default_sizes_crop' );
 	add_filter( 'image_size_names_choose',  __NAMESPACE__ . '\insert_custom_image_sizes', 10, 1 );
-	add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), 'settings_link' );
-
-	load_plugin_textdomain( MISP_DOMAIN, false, basename( MISP_PATH ) . DIRECTORY_SEPARATOR . 'i18n' );
 }
 add_action( 'plugins_loaded', __NAMESPACE__ . '\init' );
 
