@@ -10,6 +10,20 @@
 
 namespace MISP;
 
+// Load required files.
+foreach ( glob( MISP_PATH . 'includes/core/*.php' ) as $filename ) {
+	require $filename;
+}
+foreach ( glob( MISP_PATH . 'includes/settings/*.php' ) as $filename ) {
+	require $filename;
+}
+foreach ( glob( MISP_PATH . 'includes/backend/*.php' ) as $filename ) {
+	require $filename;
+}
+
+Admin\setup();
+Fields\setup();
+
 require_once MISP_PATH . 'php/log.php';
 
 /**

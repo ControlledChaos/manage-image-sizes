@@ -8,8 +8,8 @@ use MISP\Classes\Log as Log_Class;
 use function MISP\get_plugin_options;
 use function MISP\misp_tmp_dir;
 use function MISP\misp_check_id;
-use function MISP\misp_edit_page;
-use function MISP\misp_edit_setup;
+use function MISP\Admin\misp_edit_page;
+use function MISP\Admin\misp_edit_setup;
 
 require_once(MISP_PATH . 'php/log.php');
 

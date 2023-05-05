@@ -42,7 +42,7 @@
 namespace MISP;
 
 use MISP\Classes\Log as Log_Class,
-	MISP\Options     as Options;
+	MISP\Fields      as Fields;
 
 // Restrict direct access.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -172,147 +172,6 @@ add_action( 'plugins_loaded', function() {
 } );
 
 /**
- * Options in Media Settings
- *
- * @since  1.0.0
- * @return void
- */
-function options_media() {
-
-	add_settings_field(
-		'hard_crop_medium',
-		__( 'Medium crop', MISP_DOMAIN ),
-		__NAMESPACE__ . '\hard_crop_medium_callback',
-		'media',
-		'default',
-		[
-			__( 'Crop medium size to exact dimensions.', MISP_DOMAIN )
-		]
-	);
-
-	add_settings_field(
-		'hard_crop_large',
-		__( 'Large crop', MISP_DOMAIN ),
-		__NAMESPACE__ . '\hard_crop_large_callback',
-		'media',
-		'default',
-		[
-			__( 'Crop large size to exact dimensions.', MISP_DOMAIN )
-		]
-	);
-
-	register_setting(
-		'media',
-		'hard_crop_medium'
-	);
-
-	register_setting(
-		'media',
-		'hard_crop_large'
-	);
-}
-
-/**
- * Sanitize Medium Size Crop field
- *
- * @since  1.0.0
- * @return boolean
- */
-function hard_crop_medium_sanitize() {
-
-	$option = get_option( 'hard_crop_medium', true );
-	if ( true == $option ) {
-		$option = true;
-	} else {
-		$option = false;
-	}
-	return apply_filters( 'misp_hard_crop_medium', $option );
-}
-
-/**
- * Sanitize Large Size Crop field
- *
- * @since  1.0.0
- * @return boolean
- */
-function hard_crop_large_sanitize() {
-
-	$option = get_option( 'hard_crop_large', true );
-	if ( true == $option ) {
-		$option = true;
-	} else {
-		$option = false;
-	}
-	return apply_filters( 'misp_hard_crop_large', $option );
-}
-
-/**
- * Medium crop field
- *
- * @since  1.0.0
- * @return string
- */
-function hard_crop_medium_callback( $args ) {
-
-	$option   = hard_crop_medium_sanitize();
-	$field_id = 'hard_crop_medium';
-
-	$html = '<fieldset>';
-	$html .= sprintf(
-		'<legend class="screen-reader-text">%s</legend>',
-		__( 'Medium crop', MISP_DOMAIN )
-	);
-	$html .= sprintf(
-		'<label for="%s">',
-		$field_id
-	);
-	$html .= sprintf(
-		'<input type="checkbox" id="%s" name="%s" value="1" %s /> %s',
-		$field_id,
-		$field_id,
-		checked( 1, $option, false ),
-		$args[0]
-	);
-	$html .= '</label>';
-	$html .= '</fieldset>';
-
-	echo $html;
-}
-
-/**
- * Large crop field
- *
- * @since  1.0.0
- * @return string
- */
-function hard_crop_large_callback( $args ) {
-
-	$option   = hard_crop_large_sanitize();
-	$field_id = 'hard_crop_large';
-
-	$html = '<fieldset>';
-	$html .= sprintf(
-		'<legend class="screen-reader-text">%s</legend>',
-		__( 'Large crop', MISP_DOMAIN )
-	);
-	$html .= sprintf(
-		'<label for="%s">',
-		$field_id
-	);
-	$html .= sprintf(
-		'<input type="checkbox" id="%s" name="%s" value="1" %s /> %s',
-		$field_id,
-		$field_id,
-		checked( 1, $option, false ),
-		$args[0]
-	);
-	$html .= '</label>';
-	$html .= '</fieldset>';
-
-	echo $html;
-}
-
-/**
  * Update default hard crop options
  *
  * @since  1.0.0
@@ -438,7 +297,7 @@ function get_plugin_options() {
 
 function update_user_options() {
 
-	require_once MISP_PATH . 'php/options.php';
+	require_once MISP_PATH . 'includes/settings/fields.php';
 
 	$options = get_user_options();
 
@@ -598,9 +457,6 @@ function misp_add_thickbox() {
 /* For all purpose needs */
 function misp_ajax() {
 
-	// Move all adjuntant functions to a separate file and include that here
-	require_once MISP_PATH . 'php/functions.php';
-
 	Log_Class\PteLogger :: debug( 'PARAMETERS: ' . print_r( $_REQUEST, true ) );
 
 	//header('Content-type: application/json');
@@ -701,97 +557,6 @@ function misp_media_row_actions( $actions, $post, $detached ) {
 }
 add_filter( 'media_row_actions', __NAMESPACE__ . '\misp_media_row_actions', 10, 3 );
 
-function misp_options() {
-	require_once MISP_PATH . 'php/options.php';
-	Options\options_init();
-}
-add_action( 'load-settings_page_misp',  __NAMESPACE__ . '\misp_options' );
-add_action( 'load-options.php',  __NAMESPACE__ . '\misp_options' );
-
-/**
- * Plugin options page
- *
- * Displays as a submenu page under Settings.
- *
- * @since  1.0.0
- * @return void
- */
-function admin_menu() {
-
-	add_options_page(
-		__( 'Manage Image Sizes', MISP_DOMAIN ),
-		__( 'Image Sizes', MISP_DOMAIN ),
-		'edit_posts',
-		'misp',
-		__NAMESPACE__ . '\misp_launch_options_page'
-	);
-
-	// The submenu page function does not put a menu item in the wordpress sidebar.
-	add_submenu_page(
-		null,
-		__( 'Manage Image Sizes', MISP_DOMAIN ),
-		__( 'Image Sizes', MISP_DOMAIN ),
-		'edit_posts',
-		'misp-edit',
-		'misp_edit_page'
-	);
-
-
-}
-add_action( 'admin_menu',  __NAMESPACE__ . '\admin_menu' );
-
-function misp_launch_options_page() {
-	require_once MISP_PATH . 'php/options.php';
-	Options\options_page();
-}
-
-/**
- * This runs after headers have been sent, see the misp_edit_setup for the
- * function that runs before anything is sent to the browser
- */
-function misp_edit_page() {
-
-	// This is set via the misp_edit_setup function'.
-	global $misp_body;
-	echo( $misp_body );
-}
-
-/**
- * This hook (load-media_page_misp-edit)
- *    depends on which page you use in the admin section
- * (load-media_page_misp-edit) : wp-admin/upload.php?page=misp-edit
- * (dashboard_page_misp-edit)  : wp-admin/?page=misp-edit
- * (posts_page_misp-edit)      : wp-admin/edit.php?page=misp-edit
- */
-function misp_edit_setup() {
-
-	global $post, $title, $misp_body;
-
-	$post_id = (int) $_GET['misp-id'];
-
-	if ( ! isset( $post_id ) || ! is_int( $post_id ) || ! wp_attachment_is_image( $post_id ) || ! misp_check_id( $post_id ) ) {
-
-		//die("POST: $post_id IS_INT:" . is_int( $post_id ) . " ATTACHMENT: " . wp_attachment_is_image( $post_id ));
-		wp_redirect( admin_url( 'upload.php' ) );
-		exit();
-	}
-
-	$post  = get_post( $post_id );
-	$title = __( 'Manage Image Sizes', MISP_DOMAIN );
-
-	include_once MISP_PATH . 'php/functions.php';
-
-	// Add the scripts and styles.
-	wp_enqueue_script( 'jquery' );
-	wp_enqueue_script( 'jquery-ui-dialog' );
-	wp_enqueue_script( 'iris' );
-	wp_enqueue_style( 'colors' );
-	wp_enqueue_style( 'wp-jquery-ui-dialog' );
-
-	$misp_body = misp_body( $post->ID );
-}
-add_action( 'load-media_page_misp-edit',  __NAMESPACE__ . '\misp_edit_setup' );
-
 /**
  * This code creates the image used for the crop
  *
@@ -804,8 +569,6 @@ function misp_wp_ajax_imgedit_preview_wrapper() {
 }
 add_action( 'wp_ajax_misp_imgedit_preview',  __NAMESPACE__ . '\misp_wp_ajax_imgedit_preview_wrapper' );
 
-require_once MISP_PATH . 'init.php';
-
 /**
  * Initialize plugin
  *
@@ -814,11 +577,12 @@ require_once MISP_PATH . 'init.php';
  */
 function init() {
 
-	add_action( 'admin_init', __NAMESPACE__ . '\options_media', 9 );
-	add_action( 'after_setup_theme',  __NAMESPACE__ . '\default_sizes_crop' );
+	add_action( 'init',  __NAMESPACE__ . '\default_sizes_crop' );
 	add_filter( 'image_size_names_choose',  __NAMESPACE__ . '\insert_custom_image_sizes', 10, 1 );
 }
 add_action( 'plugins_loaded', __NAMESPACE__ . '\init' );
+
+require_once MISP_PATH . 'init.php';
 
 /**
  * Include Imsanity
