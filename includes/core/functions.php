@@ -251,7 +251,7 @@ function misp_body( $id ){
 				, print_r( $meta, true ) 
 			) 
 		);
-		$logger->error( __( "Please contact support", MISP_DOMAIN ) );
+		$logger->error( __( "Please contact support", 'manage-image-sizes' ) );
 	}
 
 	Log_Class\PteLogger :: debug( "PTE-VERSION: " . MISP_VERSION .

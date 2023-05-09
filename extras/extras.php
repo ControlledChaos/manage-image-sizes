@@ -15,10 +15,10 @@ class PostThumbnailExtras {
 	 * Internationalization and Localization
 	 */
 	public function i18n() {
-		$locale = apply_filters( 'plugin_locale', get_locale(), MISP_DOMAIN );
-		load_textdomain( MISP_DOMAIN
-			, WP_LANG_DIR.'/'.MISP_DOMAIN.'/'.MISP_DOMAIN.'-'.$locale.'.mo' );
-		load_plugin_textdomain( MISP_DOMAIN
+		$locale = apply_filters( 'plugin_locale', get_locale(), 'manage-image-sizes' );
+		load_textdomain( 'manage-image-sizes'
+			, WP_LANG_DIR.'/'.'manage-image-sizes'.'/'.'manage-image-sizes'.'-'.$locale.'.mo' );
+		load_plugin_textdomain( 'manage-image-sizes'
 			, FALSE
 			, dirname( plugin_basename( __FILE__ ) ) . '/i18n/' );
 	}

@@ -25,15 +25,15 @@ function asset( $path ) {
 		misp_options_nonce = "<?php echo wp_create_nonce( 'misp-options' ); ?>",
 		mispI18n    = <?php echo json_encode(
 			[
-				'no_t_selected' => __( 'No thumbnails selected', MISP_DOMAIN ),
-				'no_c_selected' => __( 'No crop selected', MISP_DOMAIN ),
-				'crop_problems' => __( 'Cropping will likely result in skewed imagery', MISP_DOMAIN ),
-				'save_crop_problem' => __( 'There was a problem saving the crop...', MISP_DOMAIN ),
-				'cropSave'      => __( 'Crop and Save', MISP_DOMAIN ),
-				'crop'          => __( 'Crop', MISP_DOMAIN ),
-				'fitCrop_save'  => __( 'Save', MISP_DOMAIN ),
-				'fitCrop_transparent' => __( 'Set transparent', MISP_DOMAIN ),
-				'transparent'   => __( 'transparent/white', MISP_DOMAIN )
+				'no_t_selected' => __( 'No thumbnails selected', 'manage-image-sizes' ),
+				'no_c_selected' => __( 'No crop selected', 'manage-image-sizes' ),
+				'crop_problems' => __( 'Cropping will likely result in skewed imagery', 'manage-image-sizes' ),
+				'save_crop_problem' => __( 'There was a problem saving the crop...', 'manage-image-sizes' ),
+				'cropSave'      => __( 'Crop and Save', 'manage-image-sizes' ),
+				'crop'          => __( 'Crop', 'manage-image-sizes' ),
+				'fitCrop_save'  => __( 'Save', 'manage-image-sizes' ),
+				'fitCrop_transparent' => __( 'Set transparent', 'manage-image-sizes' ),
+				'transparent'   => __( 'transparent/white', 'manage-image-sizes' )
 			]
 		);
 ?>;
@@ -49,18 +49,18 @@ function asset( $path ) {
 <div class="wrap ng-cloak" ng-init="currentThumbnailBarPosition='<?php echo $options['misp_thumbnail_bar']; ?>'" ng-controller="PteCtrl">
 	<?php if ( ! isset( $_GET['title'] ) || $_GET['title'] != 'false' ) : ?>
 
-	<h1><?php _e( 'Manage Image Sizes', MISP_DOMAIN ); ?></h1>
-	<p class="description"><?php _e( 'Crop images by size and by aspect ratio.', MISP_DOMAIN ); ?></p>
+	<h1><?php _e( 'Manage Image Sizes', 'manage-image-sizes' ); ?></h1>
+	<p class="description"><?php _e( 'Crop images by size and by aspect ratio.', 'manage-image-sizes' ); ?></p>
 
 	<?php echo sprintf(
 		'<h2>%1s %2s</h2>',
-		__( 'Editing ', MISP_DOMAIN ),
+		__( 'Editing ', 'manage-image-sizes' ),
 		$post->post_title
 	); ?>
 	<?php endif; ?>
 	<h3 class="nav-tab-wrapper">
-		<a ng-href="" ng-class="pageClass('crop')" ng-click="changePage('crop')" class="nav-tab"><?php _e( 'Crop', MISP_DOMAIN ); ?></a>
-		<a ng-href="" ng-class="pageClass('view')" ng-click="changePage('view')" class="nav-tab"><?php _e( 'View', MISP_DOMAIN ); ?></a>
+		<a ng-href="" ng-class="pageClass('crop')" ng-click="changePage('crop')" class="nav-tab"><?php _e( 'Crop', 'manage-image-sizes' ); ?></a>
+		<a ng-href="" ng-class="pageClass('view')" ng-click="changePage('view')" class="nav-tab"><?php _e( 'View', 'manage-image-sizes' ); ?></a>
 	</h3>
 	<div id="poststuff">
 		<div id="post-body" class="metabox-holder columns-1">
@@ -88,7 +88,7 @@ function asset( $path ) {
 					<img id="misp-preview" src="<?php echo $editor_image; ?>" />
 
 					<div id="misp-crop-controls">
-						<a ng-click="toggleOptions()" class="button button-secondary" ng-href=""><?php _e( 'Options', MISP_DOMAIN ); ?>
+						<a ng-click="toggleOptions()" class="button button-secondary" ng-href=""><?php _e( 'Options', 'manage-image-sizes' ); ?>
 							<span class="fa fa-caret-down" ng-hide="cropOptions"></span>
 							<span class="fa fa-caret-up" ng-show="cropOptions"></span>
 						</a>
@@ -104,16 +104,16 @@ function asset( $path ) {
 								<ul>
 									<li>
 										<!--ui-event="{blur : 'aspectRatioBlur()'}"-->
-										<label for="misp-aspect-ratio"><?php _e( 'Aspect Ratio', MISP_DOMAIN ); ?>: </label>
+										<label for="misp-aspect-ratio"><?php _e( 'Aspect Ratio', 'manage-image-sizes' ); ?>: </label>
 										<input id="misp-aspect-ratio"
 												type="number"
-												placeholder="<?php _e( 'width/height', MISP_DOMAIN ); ?>"
+												placeholder="<?php _e( 'width/height', 'manage-image-sizes' ); ?>"
 												ng-model="aspectRatio" ng-change="changeAR()" name="misp-aspect-ratio" />
 										<!--ng-pattern="aspectRatioPattern" />-->
 										<span class="fa fa-undo" ng-click="aspectRatio = null"></span>
 									</li>
 									<li>
-										<label for="misp-crop-and-save"><?php _e( 'Crop and save', MISP_DOMAIN ); ?></label>
+										<label for="misp-crop-and-save"><?php _e( 'Crop and save', 'manage-image-sizes' ); ?></label>
 										<input ng-model="mispCropSave"
 												ng-init="mispCropSave = <?php print( ( $options['misp_crop_save'] ) ? 'true' : 'false' ); ?>"
 												ng-change=""
@@ -122,11 +122,11 @@ function asset( $path ) {
 												id="misp-crop-and-save" />
 									</li>
 									<li>
-										<?php _e( 'Change the current thumbnails position:', MISP_DOMAIN ); ?>&nbsp;<button ng-click="toggleCurrentThumbnailBarPosition()">{{ currentThumbnailBarPosition }}</button>
+										<?php _e( 'Change the current thumbnails position:', 'manage-image-sizes' ); ?>&nbsp;<button ng-click="toggleCurrentThumbnailBarPosition()">{{ currentThumbnailBarPosition }}</button>
 									</li>
 									<?php if ( $post->post_mime_type == 'image/jpeg' ): # is JPEG file ?>
 									<li>
-										<label for="misp-jpg-compression"><?php _e( 'JPEG Compression', MISP_DOMAIN ); ?></label>&nbsp;
+										<label for="misp-jpg-compression"><?php _e( 'JPEG Compression', 'manage-image-sizes' ); ?></label>&nbsp;
 										<input id="misp-jpg-compression"
 											type="number"
 											ng-model="mispJpgCompression"
@@ -161,25 +161,25 @@ function asset( $path ) {
 							<th class="center">
 								<input type="checkbox" ng-model="tableSelector" ng-change="toggleAll()" />
 							</th>
-							<th><?php _e( 'Thumbnails', MISP_DOMAIN ); ?></th>
-							<th class="align-right" title="<?php _e( 'width', MISP_DOMAIN ); ?>"><?php _e( 'W', MISP_DOMAIN ); ?></th>
-							<th class="align-right" title="<?php _e( 'height', MISP_DOMAIN ); ?>"><?php _e( 'H', MISP_DOMAIN ); ?></th>
-							<th title="<?php _e( 'crop', MISP_DOMAIN ); ?>"><?php _e( 'C', MISP_DOMAIN ); ?></th>
+							<th><?php _e( 'Thumbnails', 'manage-image-sizes' ); ?></th>
+							<th class="align-right" title="<?php _e( 'width', 'manage-image-sizes' ); ?>"><?php _e( 'W', 'manage-image-sizes' ); ?></th>
+							<th class="align-right" title="<?php _e( 'height', 'manage-image-sizes' ); ?>"><?php _e( 'H', 'manage-image-sizes' ); ?></th>
+							<th title="<?php _e( 'crop', 'manage-image-sizes' ); ?>"><?php _e( 'C', 'manage-image-sizes' ); ?></th>
 							<th class="center">
 								<span class="misp-thumbnails-menu">
 									<span ng-show="anyProposed()"
 										ng-click="save()"
 										id="misp-save-all"
-										title="<?php _e( 'Save all', MISP_DOMAIN ); ?>"
+										title="<?php _e( 'Save all', 'manage-image-sizes' ); ?>"
 										class="fa fa-save"></span>
 									<span ng-show="anyProposed()"
 										ng-click="trashAll(); $event.stopPropagation()"
 										id="misp-reset-all"
-										title="<?php _e( 'Reset all', MISP_DOMAIN ); ?>"
+										title="<?php _e( 'Reset all', 'manage-image-sizes' ); ?>"
 										class="fa fa-trash-o"></span>
 									<span ng-click="view(anyProposed());"
 										id="misp-view-modified"
-										title="<?php _e( 'View all/modified', MISP_DOMAIN ); ?>"
+										title="<?php _e( 'View all/modified', 'manage-image-sizes' ); ?>"
 										class="fa fa-search"></span>
 								</span>
 							</th>
@@ -206,20 +206,20 @@ function asset( $path ) {
 									<span class="misp-thumbnail-menu">
 										<span ng-show="thumbnail.proposed"
 											ng-click="save(thumbnail)"
-											title="<?php _e( 'Save', MISP_DOMAIN ); ?>" class="fa fa-save"></span>
+											title="<?php _e( 'Save', 'manage-image-sizes' ); ?>" class="fa fa-save"></span>
 										<span ng-show="thumbnail.proposed"
 											ng-click="trash(thumbnail); $event.stopPropagation()"
-											title="<?php _e( 'Reset', MISP_DOMAIN ); ?>" class="fa fa-trash-o"></span>
+											title="<?php _e( 'Reset', 'manage-image-sizes' ); ?>" class="fa fa-trash-o"></span>
 										<span ng-show="thumbnail.proposed"
 											ng-click="changePage('view'); view(thumbnail.name); $event.stopPropagation();"
-											title="<?php _e( 'Compare/View', MISP_DOMAIN ); ?>" class="fa fa-search"></span>
+											title="<?php _e( 'Compare/View', 'manage-image-sizes' ); ?>" class="fa fa-search"></span>
 									</span>
 								</td>
 							</tr>
 						</tbody>
 					</table>
 					<div id="aspect-ratio-selector" ng-show="aspectRatios.length">
-						<h4><?php _e( 'These thumbnails have an aspect ratio set:', MISP_DOMAIN ); ?></h4>
+						<h4><?php _e( 'These thumbnails have an aspect ratio set:', 'manage-image-sizes' ); ?></h4>
 						<ul>
 							<li ng-repeat="aspectRatio in aspectRatios | orderBy:size">
 							<a ng-click="selectAspectRatio(aspectRatio)" ng-href="">
@@ -228,7 +228,7 @@ function asset( $path ) {
 						</ul>
 					</div>
 					<div ng-class="currentThumbnailBarPosition" id="misp-remember" ng-show="anySelected()">
-						<h4><?php _e( 'Current Thumbnails', MISP_DOMAIN ); ?></h4>
+						<h4><?php _e( 'Current Thumbnails', 'manage-image-sizes' ); ?></h4>
 						<ul id="misp-remember-list">
 							<li ng-repeat="thumbnail in thumbnails | filter:{selected:true}">
 								<img ng-src="{{ thumbnail.current.url | randomizeUrl }}"
@@ -251,21 +251,21 @@ function asset( $path ) {
 						ng-dblclick="changePage('crop');$event.stopPropagation();"
 						ng-click="thumbnail.selected = !thumbnail.selected;updateSelected();"
 						ng-hide="thumbnail.showProposed">
-						<span ng-show="thumbnail.proposed"><strong><?php _e( 'Original', MISP_DOMAIN ); ?>: {{ thumbnail.name }}</strong><br/></span>
+						<span ng-show="thumbnail.proposed"><strong><?php _e( 'Original', 'manage-image-sizes' ); ?>: {{ thumbnail.name }}</strong><br/></span>
 						<img ng-src="{{ thumbnail.current.url | randomizeUrl }}"
 								ng-show="thumbnail.current"
 								alt="{{ thumbnail.name }}"
 								title="{{ thumbnail.name }}" />
 						<span class="no-current-image not-generated-message" ng-hide="thumbnail.current">
 							<span class="fa fa-exclamation-circle"></span>
-							<?php _e( 'No image has been generated yet for size ', MISP_DOMAIN ); ?> '{{ thumbnail.name }}'
+							<?php _e( 'No image has been generated yet for size ', 'manage-image-sizes' ); ?> '{{ thumbnail.name }}'
 						</span>
 						</div>
 						<div
 						ng-dblclick="changePage('crop');$event.stopPropagation();"
 						ng-click="thumbnail.selected = !thumbnail.selected;updateSelected();"
 						ng-show="thumbnail.showProposed">
-						<span><strong><?php _e( 'Proposed crop for', MISP_DOMAIN ); ?> {{ thumbnail.name }} <?php _e( 'size', MISP_DOMAIN ); ?></strong><br/></span>
+						<span><strong><?php _e( 'Proposed crop for', 'manage-image-sizes' ); ?> {{ thumbnail.name }} <?php _e( 'size', 'manage-image-sizes' ); ?></strong><br/></span>
 						<!--ng-click="selectThumb(thumbnail)"-->
 						<img ng-src="{{ thumbnail.proposed.url | randomizeUrl }}"
 								ng-show="thumbnail.showProposed"

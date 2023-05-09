@@ -17,7 +17,7 @@ class PTXOptions {
 
 	public function admin_init() {
 		add_settings_field( 'ptx-post-thumbnails'
-			, '<b>' . __( 'Add Image Sizes', MISP_DOMAIN ) . '</b>'
+			, '<b>' . __( 'Add Image Sizes', 'manage-image-sizes' ) . '</b>'
 				. '&nbsp;<a class="ptx-add-thumb" href="#">+</a>'
 			, array( $this, 'create_post_thumbnails_html' )
 			, 'media'
@@ -31,7 +31,7 @@ class PTXOptions {
 		// Add a section for displaying other Post Thumbnails and their metadata
 		// (e.g. width, height, crop)
 		add_settings_section( 'ptx-other-post-thumbnails'
-			, __( 'Other Image Sizes', MISP_DOMAIN )
+			, __( 'Other Image Sizes', 'manage-image-sizes' )
 			, array( $this, 'other_post_thumbnails_html' )
 			, 'media'
 		);
@@ -112,8 +112,8 @@ class PTXOptions {
 EOT;
 		printf(
 			$output,
-			__( 'Create custom image sizes. Click the + icon, complete size fields, then click the Save Changes button.', MISP_DOMAIN ),
-			__( 'There are pending changes, are you sure that you want to leave?', MISP_DOMAIN )
+			__( 'Create custom image sizes. Click the + icon, complete size fields, then click the Save Changes button.', 'manage-image-sizes' ),
+			__( 'There are pending changes, are you sure that you want to leave?', 'manage-image-sizes' )
 		);
 	}
 
@@ -133,9 +133,9 @@ EOT;
 				'crop'   => true
 			);
 			$value = "";
-			$crop  = __( 'Crop to exact dimensions', MISP_DOMAIN );
+			$crop  = __( 'Crop to exact dimensions', 'manage-image-sizes' );
 		} else {
-			$crop  = __( 'Crop ', MISP_DOMAIN ) . ucwords( str_replace( '-', ' ', $thumbnail['name'] ) ) . __( ' to exact dimensions', MISP_DOMAIN );
+			$crop  = __( 'Crop ', 'manage-image-sizes' ) . ucwords( str_replace( '-', ' ', $thumbnail['name'] ) ) . __( ' to exact dimensions', 'manage-image-sizes' );
 		}
 		$checked = checked( $thumbnail['crop'], true, false );
 		$html = <<<EOT
@@ -167,9 +167,9 @@ EOT;
 EOT;
 		return sprintf(
 			$html,
-			__( 'Delete', MISP_DOMAIN ),
-			__( 'Width', MISP_DOMAIN ),
-			__( 'Height', MISP_DOMAIN ),
+			__( 'Delete', 'manage-image-sizes' ),
+			__( 'Width', 'manage-image-sizes' ),
+			__( 'Height', 'manage-image-sizes' ),
 			$crop
 		);
 	}
@@ -210,7 +210,7 @@ EOT;
 				add_settings_error( 'ptx-post-thumbnails'
 					, NULL
 					, sprintf("%s: %s"
-						, __( "Post Thumbnail Name must contain only alphanumeric characters and '-'.", MISP_DOMAIN )
+						, __( "Post Thumbnail Name must contain only alphanumeric characters and '-'.", 'manage-image-sizes' )
 						, $thumbnail['name']));
 				continue;
 			}
@@ -222,7 +222,7 @@ EOT;
 			if ( $too_large < $thumbnail['width'] || $too_large < $thumbnail['height'] ) {
 				add_settings_error( 'ptx-post-thumbnails'
 					, NULL
-					, sprintf( __( "Consider using 0 for an unlimited size side (%s)", MISP_DOMAIN ), $thumbnail['name'] )
+					, sprintf( __( "Consider using 0 for an unlimited size side (%s)", 'manage-image-sizes' ), $thumbnail['name'] )
 					, 'updated');
 			}
 
@@ -255,14 +255,14 @@ EOT;
 		$thumbnails = $this->get_other_intermediate_image_sizes();
 
 		if ( ! isset( $thumbnails ) || 0 == count( $thumbnails ) ) {
-			_e( "No additional image sizes defined", MISP_DOMAIN );
+			_e( "No additional image sizes defined", 'manage-image-sizes' );
 			return;
 		}
 
-		$name   = __( 'Name', MISP_DOMAIN );
-		$width  = __( 'Width', MISP_DOMAIN );
-		$height = __( 'Height', MISP_DOMAIN );
-		$crop   = __( 'Crop', MISP_DOMAIN );
+		$name   = __( 'Name', 'manage-image-sizes' );
+		$width  = __( 'Width', 'manage-image-sizes' );
+		$height = __( 'Height', 'manage-image-sizes' );
+		$crop   = __( 'Crop', 'manage-image-sizes' );
 		$output = <<<EOT
 <style type="text/css" media="all">
 	#ptx-other-post-thumbnails {

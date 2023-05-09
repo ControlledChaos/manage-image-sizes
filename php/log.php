@@ -35,16 +35,16 @@ class PteLogMessage {
 
 		switch ( $this->type ) {
 			case self :: $ERROR:
-				return __( 'ERROR', MISP_DOMAIN );
+				return __( 'ERROR', 'manage-image-sizes' );
 				break;
 			case self :: $WARN:
-				return __( 'WARNING', MISP_DOMAIN );
+				return __( 'WARNING', 'manage-image-sizes' );
 				break;
 			case self :: $INFO:
-				return __( 'INFO', MISP_DOMAIN );
+				return __( 'INFO', 'manage-image-sizes' );
 				break;
 			default:
-				return __( 'DEBUG', MISP_DOMAIN );
+				return __( 'DEBUG', 'manage-image-sizes' );
 		}
 	}
 
@@ -322,7 +322,7 @@ class PteLogger implements PteLogHandler {
 					$message = new PteLogMessage( $type, $message );
 				} catch ( Exception $e ) {
 					printf(
-						__( 'ERROR Logging Message: %s', MISP_DOMAIN ),
+						__( 'ERROR Logging Message: %s', 'manage-image-sizes' ),
 						$message
 					);
 				}

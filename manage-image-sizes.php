@@ -58,18 +58,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 define( 'MISP_BASENAME', plugin_basename( __FILE__ ) );
 
 /**
- * Text domain
- *
- * @since  1.0.0
- * @return string Returns the text domain of the plugin.
- *
- * @todo   Replace all strings with constant.
- */
-if ( ! defined( 'MISP_DOMAIN' ) ) {
-	define( 'MISP_DOMAIN', 'manage-image-sizes' );
-}
-
-/**
  * Plugin version
  *
  * Keeping the version at 1.0.0 as this is a starter plugin but
@@ -159,7 +147,7 @@ function settings_link( $links ) {
 			sprintf(
 				'<a href="%1s" class="misp-settings-link">%2s</a>',
 				$url,
-				esc_attr( 'Settings', MISP_DOMAIN )
+				esc_attr( 'Settings', 'manage-image-sizes' )
 			),
 		];
 
@@ -393,7 +381,7 @@ function misp_admin_media_scripts( $post_type ) {
 		'misp',
 		'mispL10n',
 		[
-			'PTE'         => __( 'Manage Image Sizes', MISP_DOMAIN ),
+			'PTE'         => __( 'Manage Image Sizes', 'manage-image-sizes' ),
 			'url'         => crop_ui_url( '<%= id %>', true ),
 			'fallbackUrl' => crop_ui_url( '<%= id %>' )
 		]
@@ -437,7 +425,7 @@ function misp_admin_post_thumbnail_html( $content, $post_id ) {
 	return $content .= '<p id="misp-link" class="hide-if-no-js"><a class="thickbox" href="'
 		. crop_ui_url( $thumbnail_id, true )
 		. '">'
-		. esc_html__( 'Manage Image Sizes', MISP_DOMAIN )
+		. esc_html__( 'Manage Image Sizes', 'manage-image-sizes' )
 		. '</a></p>';
 }
 
@@ -533,7 +521,7 @@ function misp_load_media_library() {
 		'misp',
 		'mispL10n',
 		[
-			'PTE'         => __( 'Crop Sizes', MISP_DOMAIN ),
+			'PTE'         => __( 'Crop Sizes', 'manage-image-sizes' ),
 			'url'         => crop_ui_url( '<%= id %>', true ),
 			'fallbackUrl' => crop_ui_url( '<%= id %>' )
 		]
@@ -551,7 +539,7 @@ function misp_media_row_actions( $actions, $post, $detached ) {
 	$options = get_plugin_options();
 	$url     = crop_ui_url( $post->ID );
 
-	$actions['misp'] = "<a href='${url}' title='" . __( 'Crop Image Sizes', MISP_DOMAIN ) . "'>" . __( 'Crop Sizes', MISP_DOMAIN ) . "</a>";
+	$actions['misp'] = "<a href='${url}' title='" . __( 'Crop Image Sizes', 'manage-image-sizes' ) . "'>" . __( 'Crop Sizes', 'manage-image-sizes' ) . "</a>";
 
 	return $actions;
 }

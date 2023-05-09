@@ -83,7 +83,7 @@ class PTXShortcode {
 	 * The i18n strings for the Edit Post page
 	 */
 	public function media_strings( $strings, $post ) {
-		$strings['PTXInsertShortcode'] = __( 'Insert Shortcode', MISP_DOMAIN );
+		$strings['PTXInsertShortcode'] = __( 'Insert Shortcode', 'manage-image-sizes' );
 		return $strings;
 	}
 
