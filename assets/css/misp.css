@@ -12,15 +12,16 @@
   cursor: pointer;
 }
 
-#misp-image {
-  float: left;
-  margin-right: 10px;
+.misp-page-switcher:not(.ng-scope) {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  gap: 1rem;
 }
 
 #misp-thumbnail-column {
-  float: left;
   position: relative;
-  width: 400px;
+  max-width: 400px;
 }
 
 #misp-thumbnail-column button {
@@ -53,7 +54,7 @@ td.misp-thumbnail-options {
   width: 50px;
 }
 
-i {
+.fa {
   font-family: FontAwesome;
   font-style: normal;
   font-weight: normal;
@@ -62,7 +63,7 @@ i {
   -moz-osx-font-smoothing: grayscale;
 }
 
-i.disabled {
+.fa.disabled {
   color: #aaaaaa;
 }
 
@@ -153,27 +154,41 @@ td.center {
   margin: 10px 0;
 }
 
-.misp-display-thumbnail-image {
-  margin-bottom: 10px;
-  position: relative;
+.misp-display-thumbnail {
+  width: 100%;
 }
 
 .misp-display-thumbnail-menu {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  gap: 0.5em;
+  margin-top: 1rem;
   font-size: 1.2em;
-  float: left;
-  margin-right: 3px;
-  padding: 2px;
 }
 
-.no-current-image {
-  font-size: 3em;
+.no-current-image.not-generated-message {
+  font-size: 1.325em;
+}
+
+.no-current-image.not-generated-list {
+  font-size: 2.25rem;
+}
+
+.no-current-image .fa-exclamation-circle {
+  color: #dd0000;
+}
+
+.misp-display-thumbnail-image {
+  margin-bottom: 10px;
+  position: relative;
 }
 
 .misp-display-thumbnail-image.selected {
   border: solid 2px #cccccc;
 }
 
-.misp-display-thumbnail-image.modified.selected {
+.misp-display-thumbnail-image.selected.modified {
   border-color: green;
   background-color: #ddffdd;
   padding: 1rem;
@@ -181,15 +196,14 @@ td.center {
 
 .misp-display-thumbnail-image.selected img {
   display: block;
-  width: 100%;
   max-width: 100%;
   height: auto;
+  margin-top: 1rem;
 }
 
 .misp-display-thumbnail-image.original {
-  transition: background 1.5s ease-in-out, padding 1.5s ease-in-out;
   -webkit-transition: background 1.5s ease-in-out, padding 1.5s ease-in-out;
-  -moz-transition: background 1.5s ease-in-out, padding 1.5s ease-in-out;
+  transition: background 1.5s ease-in-out, padding 1.5s ease-in-out;
 }
 
 /*** Angular cloak ***/
@@ -199,7 +213,6 @@ td.center {
   display: none;
 }
 
-/** For thumbnail review **/
 #misp-remember,
 #misp-remember-list {
   margin: 0;

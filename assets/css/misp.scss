@@ -12,20 +12,19 @@
 	cursor: pointer;
 }
 
-#misp-image {
-	float: left;
-	margin-right: 10px;
+.misp-page-switcher:not( .ng-scope ) {
+	display: flex;
+	gap: 1rem;
 }
 
 #misp-thumbnail-column {
-	float: left;
 	position: relative;
-	width: 400px;
-}
+	max-width: 400px;
 
-#misp-thumbnail-column button {
-	float: right;
-	margin: 5px;
+	button {
+		float: right;
+		margin: 5px;
+	}
 }
 
 // .misp-thumbnails-menu { display: none; }
@@ -55,25 +54,25 @@ td.misp-thumbnail-options {
 	width: 50px;
 }
 
-i {
+.fa {
 	font-family: FontAwesome;
 	font-style: normal;
 	font-weight: normal;
 	line-height: 1;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
-}
 
-i.disabled {
-	color: #aaaaaa;
+	&.disabled {
+		color: #aaaaaa;
+	}
 }
 
 tr.selected-true {
 	background-color: #e0ffe0;
-}
 
-tr.selected-true.alternate {
-	background-color: #eaffea;
+	&.alternate {
+		background-color: #eaffea;
+	}
 }
 
 th.center,
@@ -155,43 +154,58 @@ td.center {
 	margin: 10px 0;
 }
 
-.misp-display-thumbnail-image {
-	margin-bottom: 10px;
-	position: relative;
+.misp-display-thumbnail {
+	width: 100%;
 }
 
 .misp-display-thumbnail-menu {
+	display: flex;
+	gap: 0.5em;
+	margin-top: 1rem;
 	font-size: 1.2em;
-	float:left;
-	margin-right: 3px;
-	padding: 2px;
 }
 
 .no-current-image {
-	font-size: 3em;
+
+	&.not-generated-message {
+		font-size: 1.325em;
+	}
+
+	&.not-generated-list {
+		font-size: 2.25rem;
+	}
+
+	.fa-exclamation-circle {
+		color: #dd0000;
+	}
 }
 
-.misp-display-thumbnail-image.selected {
-	border: solid 2px #cccccc;
-}
+.misp-display-thumbnail-image {
+	margin-bottom: 10px;
+	position: relative;
 
-.misp-display-thumbnail-image.modified.selected {
-	border-color: green;
-	background-color: #ddffdd;
-	padding: 1rem;
-}
+	&.selected {
+		border: solid 2px #cccccc;
 
-.misp-display-thumbnail-image.selected img {
-	display: block;
-	width: 100%;
-	max-width: 100%;
-	height: auto;
-}
+		&.modified {
+			border-color: green;
+			background-color: #ddffdd;
+			padding: 1rem;
+		}
 
-.misp-display-thumbnail-image.original {
-	transition: background 1.5s ease-in-out, padding 1.5s ease-in-out;
-	-webkit-transition: background 1.5s ease-in-out, padding 1.5s ease-in-out;
-	-moz-transition: background 1.5s ease-in-out, padding 1.5s ease-in-out;
+		img {
+			display: block;
+			max-width: 100%;
+			height: auto;
+			margin-top: 1rem;
+		}
+	}
+
+	&.original {
+		-moz-transition: background 1.5s ease-in-out, padding 1.5s ease-in-out;
+		-webkit-transition: background 1.5s ease-in-out, padding 1.5s ease-in-out;
+		transition: background 1.5s ease-in-out, padding 1.5s ease-in-out;
+	}
 }
 
 /*** Angular cloak ***/
@@ -201,7 +215,6 @@ td.center {
 	display: none;
 }
 
-/** For thumbnail review **/
 #misp-remember,
 #misp-remember-list {
 	margin: 0;
