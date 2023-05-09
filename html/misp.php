@@ -41,7 +41,7 @@ function u( $path ){
 
 <link rel="stylesheet" href="<?php u( 'apps/font-awesome/css/font-awesome.min.css' ) ?>"/>
 <link rel="stylesheet" href="<?php u( 'apps/jcrop/css/jquery.Jcrop.css' ) ?>"/>
-<link rel="stylesheet" href="<?php u( 'css/misp.css' ) ?>"/>
+<link rel="stylesheet" href="<?php u( 'assets/css/misp.css' ) ?>"/>
 
 <div class="wrap ng-cloak" ng-init="currentThumbnailBarPosition='<?php echo $options['misp_thumbnail_bar'];?>'" ng-controller="PteCtrl">
    <?php if ( !isset( $_GET['title'] ) || $_GET['title'] != 'false' ) : ?>

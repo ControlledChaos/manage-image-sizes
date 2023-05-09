@@ -386,7 +386,7 @@ function misp_admin_media_scripts( $post_type ) {
 	} else {
 		// add_action( 'admin_print_footer_scripts', __NAMESPACE__ . '\misp_enable_media_js', 100 );
 		wp_enqueue_script( 'misp', MISP_URL . 'js/snippets/misp_enable_media.js', [ 'media-views' ], MISP_VERSION, true);
-		wp_enqueue_style( 'misp', MISP_URL . 'css/misp-media.css', null, MISP_VERSION);
+		wp_enqueue_style( 'misp', MISP_URL . 'assets/css/misp-media.css', null, MISP_VERSION);
 	}
 
 	wp_localize_script(
