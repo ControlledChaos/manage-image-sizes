@@ -88,8 +88,7 @@ function asset( $path ) {
 					<img id="misp-preview" src="<?php echo $editor_image; ?>" />
 
 					<div id="misp-crop-controls">
-						<a ng-click="toggleOptions()" class="button button-secondary" ng-href=""><?php
-							_e( 'Options', MISP_DOMAIN ); ?>
+						<a ng-click="toggleOptions()" class="button button-secondary" ng-href=""><?php _e( 'Options', MISP_DOMAIN ); ?>
 							<span class="fa fa-caret-down" ng-hide="cropOptions"></span>
 							<span class="fa fa-caret-up" ng-show="cropOptions"></span>
 						</a>
@@ -126,7 +125,8 @@ function asset( $path ) {
 										<?php _e( 'Change the current thumbnails position:', MISP_DOMAIN ); ?>&nbsp;<button ng-click="toggleCurrentThumbnailBarPosition()">{{ currentThumbnailBarPosition }}</button>
 									</li>
 									<?php if ( $post->post_mime_type == 'image/jpeg' ): # is JPEG file ?>
-									<li><label for="misp-jpg-compression"><?php _e( 'JPEG Compression', MISP_DOMAIN ); ?></label>&nbsp;
+									<li>
+										<label for="misp-jpg-compression"><?php _e( 'JPEG Compression', MISP_DOMAIN ); ?></label>&nbsp;
 										<input id="misp-jpg-compression"
 											type="number"
 											ng-model="mispJpgCompression"
@@ -190,30 +190,31 @@ function asset( $path ) {
 								ng-click="toggleSelected(thumbnail)"
 								ng-class-odd="'alternate'"
 								ng-repeat="thumbnail in thumbnails">
-							<td class="center">
-								<input type="checkbox"
-									ng-click="$event.stopPropagation()"
-									ng-model="thumbnail.selected"
-									ng-change="updateSelected()" />
+								<td class="center">
+									<input
+										type="checkbox"
+										ng-click="$event.stopPropagation()"
+										ng-model="thumbnail.selected"
+										ng-change="updateSelected()" />
 
-							</td>
-							<td>{{ thumbnail.display_name || thumbnail.name }}</td>
-							<td class="align-right">{{ thumbnail.width }}</td>
-							<td class="align-right">{{ thumbnail.height }}</td>
-							<td>{{ thumbnail.crop }}</td>
-							<td class="center misp-thumbnail-options">
-								<span class="misp-thumbnail-menu">
-									<span ng-show="thumbnail.proposed"
-										ng-click="save(thumbnail)"
-										title="<?php _e( 'Save', MISP_DOMAIN ); ?>" class="fa fa-save"></span>
-									<span ng-show="thumbnail.proposed"
-										ng-click="trash(thumbnail); $event.stopPropagation()"
-										title="<?php _e( 'Reset', MISP_DOMAIN ); ?>" class="fa fa-trash-o"></span>
-									<span ng-show="thumbnail.proposed"
-										ng-click="changePage('view'); view(thumbnail.name); $event.stopPropagation();"
-										title="<?php _e( 'Compare/View', MISP_DOMAIN ); ?>" class="fa fa-search"></span>
-								</span>
-							</td>
+								</td>
+								<td>{{ thumbnail.display_name || thumbnail.name }}</td>
+								<td class="align-right">{{ thumbnail.width }}</td>
+								<td class="align-right">{{ thumbnail.height }}</td>
+								<td>{{ thumbnail.crop }}</td>
+								<td class="center misp-thumbnail-options">
+									<span class="misp-thumbnail-menu">
+										<span ng-show="thumbnail.proposed"
+											ng-click="save(thumbnail)"
+											title="<?php _e( 'Save', MISP_DOMAIN ); ?>" class="fa fa-save"></span>
+										<span ng-show="thumbnail.proposed"
+											ng-click="trash(thumbnail); $event.stopPropagation()"
+											title="<?php _e( 'Reset', MISP_DOMAIN ); ?>" class="fa fa-trash-o"></span>
+										<span ng-show="thumbnail.proposed"
+											ng-click="changePage('view'); view(thumbnail.name); $event.stopPropagation();"
+											title="<?php _e( 'Compare/View', MISP_DOMAIN ); ?>" class="fa fa-search"></span>
+									</span>
+								</td>
 							</tr>
 						</tbody>
 					</table>
@@ -234,7 +235,7 @@ function asset( $path ) {
 										ng-show="thumbnail.current"
 										alt="{{ thumbnail.name }}"
 										title="{{ thumbnail.name }}" />
-								<span title="{{ thumbnail.name }}" class="no-current-image" ng-hide="thumbnail.current">
+								<span title="{{ thumbnail.name }}" class="no-current-image not-generated-list" ng-hide="thumbnail.current">
 									<span class="fa fa-exclamation-circle"></span>
 								</span>
 							</li>
@@ -255,16 +256,16 @@ function asset( $path ) {
 								ng-show="thumbnail.current"
 								alt="{{ thumbnail.name }}"
 								title="{{ thumbnail.name }}" />
-						<span class="no-current-image" ng-hide="thumbnail.current">
+						<span class="no-current-image not-generated-message" ng-hide="thumbnail.current">
 							<span class="fa fa-exclamation-circle"></span>
-							<?php _e( 'No image has been generated yet for image: ', MISP_DOMAIN ); ?> '{{ thumbnail.name }}'
+							<?php _e( 'No image has been generated yet for size ', MISP_DOMAIN ); ?> '{{ thumbnail.name }}'
 						</span>
 						</div>
 						<div
 						ng-dblclick="changePage('crop');$event.stopPropagation();"
 						ng-click="thumbnail.selected = !thumbnail.selected;updateSelected();"
 						ng-show="thumbnail.showProposed">
-						<span><strong><?php _e( 'Proposed', MISP_DOMAIN ); ?>: {{ thumbnail.name }}</strong><br/></span>
+						<span><strong><?php _e( 'Proposed crop for', MISP_DOMAIN ); ?> {{ thumbnail.name }} <?php _e( 'size', MISP_DOMAIN ); ?></strong><br/></span>
 						<!--ng-click="selectThumb(thumbnail)"-->
 						<img ng-src="{{ thumbnail.proposed.url | randomizeUrl }}"
 								ng-show="thumbnail.showProposed"
